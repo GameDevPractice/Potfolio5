@@ -53,8 +53,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	//Bind ActionEvent
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("FristAttack", IE_Pressed, this, &ACPlayer::FirstAttack);
-	PlayerInputComponent->BindAction("SecondAttack", IE_Pressed, this, &ACPlayer::SecondAttack);
+	PlayerInputComponent->BindAction("FristAttack", IE_Pressed, this, &ACPlayer::FirstAttack_Implementation);
+	PlayerInputComponent->BindAction("SecondAttack", IE_Pressed, this, &ACPlayer::SecondAttack_Implementation);
 	PlayerInputComponent->BindAction("ThridAttack", IE_Pressed, this, &ACPlayer::ThridAttack);
 	PlayerInputComponent->BindAction("ForthAttack", IE_Pressed, this, &ACPlayer::ForthAttack);
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ACPlayer::StartSprint);
@@ -98,11 +98,13 @@ void ACPlayer::StopSprint()
 void ACPlayer::FirstAttack_Implementation()
 {
 	UE_LOG(LogTemp, Log, TEXT("FirstAttack"));
+	ActionComp->StartActionByName(this, "First");
 }
 
 void ACPlayer::SecondAttack_Implementation()
 {
 	UE_LOG(LogTemp, Log, TEXT("SecondAttack"));
+	ActionComp->StartActionByName(this, "Second");
 }
 
 void ACPlayer::ThridAttack_Implementation()

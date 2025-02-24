@@ -5,8 +5,24 @@
 
 ACPlayerController::ACPlayerController()
 {
+	
+}
+
+void ACPlayerController::BeginPlay()
+{
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACPlayer::StaticClass(), CharacterArray);
-	CharacterArray[0] = Cast<ACPlayer>(GetPawn());
+	if (CharacterArray.Num() > 0)
+	{
+		for (auto NewCharacter : CharacterArray)
+		{
+			Characters.Add(Cast<ACPlayer>(NewCharacter));
+		}
+		Characters[0] = Cast<ACPlayer>(GetPawn());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No Character"));
+	}
 }
 
 void ACPlayerController::SetupInputComponent()
@@ -19,24 +35,38 @@ void ACPlayerController::SetupInputComponent()
 
 void ACPlayerController::AddCharacter(ACPlayer* InCharacter)
 {
-	CharacterArray.Add(InCharacter);
+	Characters.Add(InCharacter);
 }
 
 void ACPlayerController::ChangeCharacter1()
 {
-	if (ensure(CharacterArray[0] != nullptr))
+	if (ensure(Characters[0] != nullptr) && Characters[0] != Cast<ACPlayer>(GetPawn()))
 	{
-		CharacterArray[0]->SetActorLocation(GetPawn()->GetActorLocation());
-		Possess(Cast<ACPlayer>(CharacterArray[0]));
+		ACPlayer* Temp = Cast<ACPlayer>(GetPawn());
+		FVector Location = Characters[0]->GetActorLocation();
+		FRotator Rotation = Characters[0]->GetActorRotation();
+		Characters[0]->SetActorLocation(GetPawn()->GetActorLocation());
+		Characters[0]->SetActorRotation(GetPawn()->GetActorRotation());
+		Possess(Cast<ACPlayer>(Characters[0]));
+		Temp->SetActorLocation(Location);
+		Temp->SetActorRotation(Rotation);
 	}
+	UE_LOG(LogTemp, Warning, TEXT("Change %s"), *GetNameSafe(Characters[0]));
 }
 
 void ACPlayerController::ChangeCharacter2()
 {
-	if (ensure(CharacterArray[1] != nullptr))
+	if (ensure(Characters[1] != nullptr) && Characters[1] != Cast<ACPlayer>(GetPawn()))
 	{
-		CharacterArray[0]->SetActorLocation(GetPawn()->GetActorLocation());
-		Possess(Cast<ACPlayer>(CharacterArray[1]));
+		ACPlayer* Temp = Cast<ACPlayer>(GetPawn());
+		FVector Location = Characters[1]->GetActorLocation();
+		FRotator Rotation = Characters[1]->GetActorRotation();
+		Characters[1]->SetActorLocation(GetPawn()->GetActorLocation());
+		Characters[1]->SetActorRotation(GetPawn()->GetActorRotation());
+		Possess(Cast<ACPlayer>(Characters[1]));
+		Temp->SetActorLocation(Location);
+		Temp->SetActorRotation(Rotation);
 	}
+	UE_LOG(LogTemp, Warning, TEXT("Change %s"), *GetNameSafe(Characters[1]));
 }
 

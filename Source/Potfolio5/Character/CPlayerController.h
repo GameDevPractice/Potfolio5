@@ -15,6 +15,9 @@ public:
 	ACPlayerController();
 
 protected:
+	virtual void BeginPlay() override;
+
+protected:
 	virtual void SetupInputComponent();
 
 	UFUNCTION(BlueprintCallable)
@@ -25,6 +28,7 @@ private:
 	void ChangeCharacter2();
 
 protected:
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Character")
 	TArray<AActor*> CharacterArray;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Character")
+	TArray<ACPlayer*> Characters;
 };
