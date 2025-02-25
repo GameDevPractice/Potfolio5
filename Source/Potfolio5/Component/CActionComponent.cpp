@@ -17,6 +17,8 @@ void UCActionComponent::BeginPlay()
 void UCActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	FString Message = GetNameSafe(GetOwner()) + " : " + ActionTags.ToStringSimple();
+	GEngine->AddOnScreenDebugMessage(-1,0.f, FColor::Red, Message);
 }
 
 void UCActionComponent::AddAction(TSubclassOf<UCAction> ActionClass)
@@ -58,4 +60,6 @@ bool UCActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
 	}
 	return false;
 }
+
+
 

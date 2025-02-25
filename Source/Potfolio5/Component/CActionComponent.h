@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "GameplayTagContainer.h"
 #include "CActionComponent.generated.h"
 
 class UCAction;
@@ -31,8 +32,28 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Action")
 	bool StopActionByName(AActor* Instigator, FName ActionName);
 
+	template<typename T>
+	TArray<T*> GetActionByClass(T* FindAction)
+	{
+		TArray<T*> Result;
+		for (auto Action : Actions)
+		{
+			if (T* CastedAction = Cast<T>(Action)) // 타입 캐스팅
+			{
+				Result.Add(CastedAction);
+				
+			}
+		}
+		return Result;
+	}
+
 protected:
 	UPROPERTY()
 	TArray<UCAction*> Actions;
+
+
+public:
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "GameplayTag")
+	FGameplayTagContainer ActionTags;
 		
 };

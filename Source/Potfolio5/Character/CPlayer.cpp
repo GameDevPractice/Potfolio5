@@ -16,8 +16,8 @@ ACPlayer::ACPlayer()
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(GetMesh());
 	SpringArm->SetRelativeLocation(FVector(0.0f, 0.0f, 150.f));
-	SpringArm->SetRelativeRotation(FRotator(0.0f, 90.f, 0.0f));
-	SpringArm->TargetArmLength = 200.0f;
+	SpringArm->SetRelativeRotation(FRotator(-10.0f, 90.f, 0.0f));
+	SpringArm->TargetArmLength = 250.0f;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);

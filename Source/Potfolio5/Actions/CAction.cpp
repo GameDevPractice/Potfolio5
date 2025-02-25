@@ -1,12 +1,38 @@
 #include "Actions/CAction.h"
+#include "Component/CActionComponent.h"
+
+
+bool UCAction::CanAction_Implementation(AActor* Instigator)
+{
+	if (IsRunning())
+	{
+		GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Red, "Already Running");
+		return false;
+	}
+	UCActionComponent* ActionComp = GetOwner();
+	if (ActionComp->ActionTags.HasAny(BlockedTags))
+	{
+		GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Red, "Have Block");
+		return false;
+	}
+	return true;
+}
 
 void UCAction::StartAction_Implementation(AActor* Instigator)
 {
-	UE_LOG(LogTemp, Log, TEXT("Running : %s"), *GetNameSafe(Instigator));
-
+	UCActionComponent* ActionComp = GetOwner();
+	ActionComp->ActionTags.AppendTags(GrantedTags);
 }
 
 void UCAction::StopAction_Implementation(AActor* Instigator)
 {
-	UE_LOG(LogTemp, Log, TEXT("Stopping : %s"), *GetNameSafe(this));
+	UCActionComponent* ActionComp = GetOwner();
+	ActionComp->ActionTags.RemoveTags(GrantedTags);
+}
+
+
+
+UCActionComponent* UCAction::GetOwner() const
+{
+	return Cast<UCActionComponent>(GetOuter());
 }

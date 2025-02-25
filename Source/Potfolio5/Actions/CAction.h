@@ -2,7 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "GameplayTagContainer.h"
 #include "CAction.generated.h"
+
+class UCActionComponent;
 
 UCLASS(Blueprintable)
 class POTFOLIO5_API UCAction : public UObject
@@ -17,6 +20,16 @@ public:
 	void StopAction(AActor* Instigator);
 
 	virtual void AddActionMontage(UAnimMontage* Montage) {};
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Action")
+	bool CanAction(AActor* Instigator);
+
+	UFUNCTION(BlueprintCallable, Category = "Action")
+	bool IsRunning() const { return bIsRunning; }
+
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Action")
+	UCActionComponent* GetOwner() const;
 	
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Action")
@@ -24,5 +37,14 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Action")
 	TArray<UAnimMontage*> ActionMontages;
+
+protected:
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "GameplayTag")
+	FGameplayTagContainer GrantedTags;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "GameplayTag")
+	FGameplayTagContainer BlockedTags;
+
+	bool bIsRunning = false;
 
 };
