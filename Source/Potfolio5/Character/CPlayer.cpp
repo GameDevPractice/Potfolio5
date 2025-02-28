@@ -52,7 +52,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("Yaw", this, &ACPlayer::Yaw);
 
 	//Bind ActionEvent
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACPlayer::ActionJump);
 	PlayerInputComponent->BindAction("FristAttack", IE_Pressed, this, &ACPlayer::FirstAttack_Implementation);
 	PlayerInputComponent->BindAction("SecondAttack", IE_Pressed, this, &ACPlayer::SecondAttack_Implementation);
 	PlayerInputComponent->BindAction("ThridAttack", IE_Pressed, this, &ACPlayer::ThridAttack);
@@ -75,6 +75,12 @@ void ACPlayer::MoveRight(float Value)
 	AddMovementInput(Direction, Value);
 }
 
+void ACPlayer::ActionJump()
+{
+	ActionComp->StartActionByName(this, "Jump");
+	
+}
+
 void ACPlayer::PitchUp(float Vaule)
 {
 	AddControllerPitchInput(Vaule);
@@ -83,6 +89,11 @@ void ACPlayer::PitchUp(float Vaule)
 void ACPlayer::Yaw(float Value)
 {
 	AddControllerYawInput(Value);
+}
+
+void ACPlayer::Jump()
+{
+	Super::Jump();
 }
 
 void ACPlayer::StartSprint()

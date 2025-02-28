@@ -27,6 +27,7 @@ public:
 private:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+	void ActionJump();
 	void PitchUp(float Vaule);
 	void Yaw(float Value);
 
@@ -38,13 +39,15 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category = "Attack")
 	 void ThridAttack(); 
 	UFUNCTION(BlueprintNativeEvent, Category = "Attack")
-	 void ForthAttack() ;
+	 void ForthAttack();
+
+	void Jump();
 
 protected:
 	void StartSprint();
 	void StopSprint();
 
-	//Assets
+	//Assets, Component
 protected:
 	USkeletalMesh* Mesh;
 
@@ -53,7 +56,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	USpringArmComponent* SpringArm;
 
+
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	UCActionComponent* ActionComp;
+
 };

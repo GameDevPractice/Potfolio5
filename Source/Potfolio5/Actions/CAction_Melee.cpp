@@ -1,5 +1,6 @@
 #include "Actions/CAction_Melee.h"
 #include "GameFramework/Character.h"
+#include "Component/CActionComponent.h"
 
 UCAction_Melee::UCAction_Melee()
 {
@@ -14,14 +15,17 @@ void UCAction_Melee::StartAction_Implementation(AActor* Instigator)
 {
 	Super::StartAction_Implementation(Instigator); 
 	ACharacter* Character = Cast<ACharacter>(Instigator);
+	UCActionComponent* ActionComp = Cast<UCActionComponent>(Character->GetComponentByClass(UCActionComponent::StaticClass()));
 	if (bCombo)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "Success");
+		
 		bSuccess = true;
 		return;
 	}
 	if (!CanAction(Instigator))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "NotCan");
+		Super::StopAction_Implementation(Instigator);
 		return;
 	}
 	//Instigator´Â Controller
@@ -60,11 +64,9 @@ void UCAction_Melee::NextCombo(AActor* Instigator)
 void UCAction_Melee::OnCombo()
 {
 	bCombo = true;
-	GEngine->AddOnScreenDebugMessage(-3, 1.f, FColor::Red, "OnCombo");
 }
 
 void UCAction_Melee::OffCombo()
 {
 	bCombo = false;
-	GEngine->AddOnScreenDebugMessage(-3, 1.f, FColor::Red, "OffCombo");
 }

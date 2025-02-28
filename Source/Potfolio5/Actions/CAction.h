@@ -13,19 +13,21 @@ class POTFOLIO5_API UCAction : public UObject
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintNativeEvent, Category = "Action")
-	void StartAction(AActor* Instigator);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Action")
+	 void StartAction(AActor* Instigator);
 
-	UFUNCTION(BlueprintNativeEvent, Category = "Action")
-	void StopAction(AActor* Instigator);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Action")
+	 void StopAction(AActor* Instigator);
 
 	virtual void AddActionMontage(UAnimMontage* Montage) {};
 
-	UFUNCTION(BlueprintNativeEvent, Category = "Action")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Action")
 	bool CanAction(AActor* Instigator);
 
 	UFUNCTION(BlueprintCallable, Category = "Action")
 	bool IsRunning() const { return bIsRunning; }
+
+	UWorld* GetWorld(AActor* Actor);
 
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Action")

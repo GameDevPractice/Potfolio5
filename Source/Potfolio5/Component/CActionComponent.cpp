@@ -10,7 +10,13 @@ UCActionComponent::UCActionComponent()
 void UCActionComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	if (AddActions.Num() > 0)
+	{
+		for (auto Action : AddActions)
+		{
+		AddAction(Action);
+		}
+	}
 }
 
 
@@ -39,7 +45,7 @@ bool UCActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
 {
 	for (UCAction* Action : Actions)
 	{
-		if (Action && Action->ActionName == ActionName)
+		if (Action != nullptr && Action->ActionName == ActionName)
 		{
 			Action->StartAction(Instigator);
 			return true;
@@ -52,7 +58,7 @@ bool UCActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
 {
 	for (UCAction* Action : Actions)
 	{
-		if (Action && Action->ActionName == ActionName)
+		if (Action != nullptr && Action->ActionName == ActionName)
 		{
 			Action->StopAction(Instigator);
 			return true;
