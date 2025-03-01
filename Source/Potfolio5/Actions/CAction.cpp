@@ -21,12 +21,20 @@ bool UCAction::CanAction_Implementation(AActor* Instigator)
 void UCAction::StartAction_Implementation(AActor* Instigator)
 {
 	UCActionComponent* ActionComp = GetOwner();
+	if (ActionComp == nullptr)
+	{
+		return;
+	}
 	ActionComp->ActionTags.AppendTags(GrantedTags);
 }
 
 void UCAction::StopAction_Implementation(AActor* Instigator)
 {
 	UCActionComponent* ActionComp = GetOwner();
+	if (ActionComp == nullptr)
+	{
+		return;
+	}
 	ActionComp->ActionTags.RemoveTags(GrantedTags);
 }
 

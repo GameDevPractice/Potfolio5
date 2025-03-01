@@ -32,6 +32,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Action")
 	bool StopActionByName(AActor* Instigator, FName ActionName);
 
+	TArray<UCAction*> GetActions() const { return Actions; }
+
 	template<typename T>
 	TArray<T*> GetActionByClass(T* FindAction)
 	{

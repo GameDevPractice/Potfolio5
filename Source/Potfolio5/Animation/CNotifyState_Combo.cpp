@@ -17,15 +17,19 @@ void UCNotifyState_Combo::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSeq
 	if (Owner != nullptr)
 	{
 		UCActionComponent* ActionComp = Cast<UCActionComponent>(Owner->GetComponentByClass(UCActionComponent::StaticClass()));
-		UCAction_Melee* MeleeAction = nullptr;
-		TArray<UCAction_Melee*> MeleeActions = ActionComp->GetActionByClass(MeleeAction);
-		if (MeleeActions.Num() <= 0)
+		if (ActionComp)
 		{
-			return;
-		}
-		for (auto Melee : MeleeActions)
-		{
-			Melee->OnCombo();
+			for (UCAction* Action : ActionComp->GetActions())
+			{
+				if (Action && Action->IsRunning()) // 실행 중인 액션만 확인
+				{
+					UCAction_Melee* MeleeAction = Cast<UCAction_Melee>(Action);
+					if (MeleeAction)
+					{
+						MeleeAction->OnCombo();  // 실행 중인 액션에 대해서만 콤보 실행
+					}
+				}
+			}
 		}
 	}
 	
@@ -38,15 +42,19 @@ void UCNotifyState_Combo::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSeque
 	if (Owner != nullptr)
 	{
 		UCActionComponent* ActionComp = Cast<UCActionComponent>(Owner->GetComponentByClass(UCActionComponent::StaticClass()));
-		UCAction_Melee* MeleeAction = nullptr;
-		TArray<UCAction_Melee*> MeleeActions = ActionComp->GetActionByClass(MeleeAction);
-		if (MeleeActions.Num() <= 0)
+		if (ActionComp)
 		{
-			return;
-		}
-		for (auto Melee : MeleeActions)
-		{
-			Melee->OffCombo();
+			for (UCAction* Action : ActionComp->GetActions())
+			{
+				if (Action && Action->IsRunning()) // 실행 중인 액션만 확인
+				{
+					UCAction_Melee* MeleeAction = Cast<UCAction_Melee>(Action);
+					if (MeleeAction)
+					{
+						MeleeAction->OffCombo();  // 실행 중인 액션에 대해서만 콤보 실행
+					}
+				}
+			}
 		}
 	}
 }

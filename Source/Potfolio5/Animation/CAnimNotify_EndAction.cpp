@@ -19,13 +19,15 @@ void UCAnimNotify_EndAction::Notify(USkeletalMeshComponent* MeshComp, UAnimSeque
 	if (Owner != nullptr)
 	{
 		UCActionComponent* ActionComp = Cast<UCActionComponent>(Owner->GetComponentByClass(UCActionComponent::StaticClass()));
-		ActionClass = ActionComp->GetActionByClass(MeleeAction);
-		if (ActionClass.Num() > 0)
-		{
-			for (auto Action : ActionClass)
-			{
-				Action->StopAction(Owner);
-			}
-		}
+        if (ActionComp)
+        {
+            for (UCAction* Action : ActionComp->GetActions())
+            {
+                if (Action && Action->IsRunning()) // 실행 중인 액션만 확인
+                {
+                    Action->StopAction_Implementation(Owner);
+                }
+            }
+        }
 	}
 }

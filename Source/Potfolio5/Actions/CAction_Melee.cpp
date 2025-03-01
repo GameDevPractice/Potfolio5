@@ -45,7 +45,7 @@ void UCAction_Melee::StopAction_Implementation(AActor* Instigator)
 
 void UCAction_Melee::NextCombo(AActor* Instigator)
 {
-	if (!bSuccess)
+	if (!bSuccess && !CanAction(Instigator))
 	{
 		return;
 	}
