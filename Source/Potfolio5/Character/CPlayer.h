@@ -24,6 +24,8 @@ protected:
 public:	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+//Movement
+
 private:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
@@ -31,6 +33,8 @@ private:
 	void PitchUp(float Vaule);
 	void Yaw(float Value);
 
+
+ 
 public:
 	UFUNCTION(BlueprintNativeEvent, Category = "Attack")
 	 void FirstAttack();
@@ -47,6 +51,10 @@ protected:
 	void StartSprint();
 	void StopSprint();
 
+protected:
+	UFUNCTION(BlueprintCallable)
+	UTexture2D* GetImage() const { return Image; }
+
 	//Assets, Component
 protected:
 	USkeletalMesh* Mesh;
@@ -60,5 +68,9 @@ protected:
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	UCActionComponent* ActionComp;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Character")
+	UTexture2D* Image;
 
 };

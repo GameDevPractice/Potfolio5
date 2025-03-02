@@ -5,6 +5,7 @@
 #include "CPlayerController.generated.h"
 
 class ACPlayer;
+class UUserWidget;
 
 UCLASS()
 class POTFOLIO5_API ACPlayerController : public APlayerController
@@ -17,6 +18,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable)
+	TArray<ACPlayer*> GetPlayer() const { return Characters; }
 protected:
 	virtual void SetupInputComponent();
 
@@ -31,4 +34,8 @@ protected:
 	TArray<AActor*> CharacterArray;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Character")
 	TArray<ACPlayer*> Characters;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+	TSubclassOf<UUserWidget> WidgetClass;
+	UUserWidget* Widget;
 };

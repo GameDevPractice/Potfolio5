@@ -2,6 +2,7 @@
 #include "GameFramework/Character.h"
 #include "Character/CPlayer.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/UserWidget.h"
 
 ACPlayerController::ACPlayerController()
 {
@@ -22,6 +23,17 @@ void ACPlayerController::BeginPlay()
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No Character"));
+	}
+	GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Red, TEXT("Controller Begin Play"));
+
+	if (WidgetClass)
+	{
+	Widget = CreateWidget(this, WidgetClass);
+	}
+
+	if (Widget != nullptr)
+	{
+		Widget->AddToViewport();
 	}
 }
 
