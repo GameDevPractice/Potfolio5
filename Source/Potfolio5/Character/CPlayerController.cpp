@@ -3,6 +3,8 @@
 #include "Character/CPlayer.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
+#include "NiagaraFunctionLibrary.h"
+
 
 ACPlayerController::ACPlayerController()
 {
@@ -62,6 +64,11 @@ void ACPlayerController::ChangeCharacter1()
 		Possess(Cast<ACPlayer>(Characters[0]));
 		Temp->SetActorLocation(Location);
 		Temp->SetActorRotation(Rotation);
+		if (ChangeEffect == nullptr)
+		{
+			return;
+		}
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(),ChangeEffect,GetPawn()->GetActorLocation() - FVector(0.0f,0.0f,150.f) );
 	}
 	UE_LOG(LogTemp, Warning, TEXT("Change %s"), *GetNameSafe(Characters[0]));
 }
@@ -78,6 +85,11 @@ void ACPlayerController::ChangeCharacter2()
 		Possess(Cast<ACPlayer>(Characters[1]));
 		Temp->SetActorLocation(Location);
 		Temp->SetActorRotation(Rotation);
+		if (ChangeEffect == nullptr)
+		{
+			return;
+		}
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ChangeEffect, GetPawn()->GetActorLocation() - FVector(0.0f, 0.0f, 150.f));
 	}
 	UE_LOG(LogTemp, Warning, TEXT("Change %s"), *GetNameSafe(Characters[1]));
 }

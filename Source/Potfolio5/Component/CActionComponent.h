@@ -50,6 +50,7 @@ public:
 	}
 
 protected:
+	UPROPERTY()
 	TArray<UCAction*> Actions;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Action")

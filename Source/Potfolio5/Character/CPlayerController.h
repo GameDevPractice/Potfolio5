@@ -6,6 +6,7 @@
 
 class ACPlayer;
 class UUserWidget;
+class UNiagaraSystem;
 
 UCLASS()
 class POTFOLIO5_API ACPlayerController : public APlayerController
@@ -38,4 +39,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 	TSubclassOf<UUserWidget> WidgetClass;
 	UUserWidget* Widget;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Particle")
+	UNiagaraSystem* ChangeEffect;
 };
