@@ -34,6 +34,7 @@ public:
 
 	TArray<UCAction*> GetActions() const { return Actions; }
 
+
 	template<typename T>
 	TArray<T*> GetActionByClass(T* FindAction)
 	{
@@ -55,6 +56,8 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Action")
 	TArray<TSubclassOf<UCAction>> AddActions;
+
+	bool bActioning;
 
 
 public:

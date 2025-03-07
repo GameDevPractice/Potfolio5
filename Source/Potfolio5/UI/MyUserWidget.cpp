@@ -3,3 +3,7 @@
 
 #include "UI/MyUserWidget.h"
 
+void UMyUserWidget::ChangeCharacter_Implementation(int32 NewInt)
+{
+
+}

@@ -4,11 +4,14 @@
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
 #include "NiagaraFunctionLibrary.h"
+#include "UI/MyUserWidget.h"
+#include "Component/CActionComponent.h"
 
 
 ACPlayerController::ACPlayerController()
 {
-	
+	ChangeTime = 5.0f;
+	bCanChange = true;
 }
 
 void ACPlayerController::BeginPlay()
@@ -56,41 +59,63 @@ void ACPlayerController::ChangeCharacter1()
 {
 	if (ensure(Characters[0] != nullptr) && Characters[0] != Cast<ACPlayer>(GetPawn()))
 	{
-		ACPlayer* Temp = Cast<ACPlayer>(GetPawn());
-		FVector Location = Characters[0]->GetActorLocation();
-		FRotator Rotation = Characters[0]->GetActorRotation();
-		Characters[0]->SetActorLocation(GetPawn()->GetActorLocation());
-		Characters[0]->SetActorRotation(GetPawn()->GetActorRotation());
-		Possess(Cast<ACPlayer>(Characters[0]));
-		Temp->SetActorLocation(Location);
-		Temp->SetActorRotation(Rotation);
-		if (ChangeEffect == nullptr)
-		{
-			return;
-		}
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(),ChangeEffect,GetPawn()->GetActorLocation() - FVector(0.0f,0.0f,150.f) );
+		ChangeCharactr(0);
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Change %s"), *GetNameSafe(Characters[0]));
 }
 
 void ACPlayerController::ChangeCharacter2()
 {
 	if (ensure(Characters[1] != nullptr) && Characters[1] != Cast<ACPlayer>(GetPawn()))
 	{
-		ACPlayer* Temp = Cast<ACPlayer>(GetPawn());
-		FVector Location = Characters[1]->GetActorLocation();
-		FRotator Rotation = Characters[1]->GetActorRotation();
-		Characters[1]->SetActorLocation(GetPawn()->GetActorLocation());
-		Characters[1]->SetActorRotation(GetPawn()->GetActorRotation());
-		Possess(Cast<ACPlayer>(Characters[1]));
-		Temp->SetActorLocation(Location);
-		Temp->SetActorRotation(Rotation);
-		if (ChangeEffect == nullptr)
-		{
-			return;
-		}
+		ChangeCharactr(1);
+	}
+}
+
+void ACPlayerController::ChangeCharactr(int32 NewInt)
+{
+	ACPlayer* Temp = Cast<ACPlayer>(GetPawn());
+	//교체 가능 판단
+	UCActionComponent* ActionComp = Cast<UCActionComponent>(Temp->GetComponentByClass(UCActionComponent::StaticClass()));
+	 if (ensure(ActionComp == nullptr))
+	 {
+		 return;
+	 }
+	if (bCanChange == false)
+	{
+		return;
+	}
+	if (ActionComp->ActionTags.IsEmpty() == false)
+	{
+		return;
+	}
+	// 교체 시간 
+	FTimerHandle ChangeHandle;
+	GetWorldTimerManager().SetTimer(ChangeHandle, this, &ACPlayerController::OnCanChange, ChangeTime, false);
+	bCanChange = false;
+
+	//교체 기능
+	FVector Location = Characters[NewInt]->GetActorLocation();
+	FRotator Rotation = Characters[NewInt]->GetActorRotation();
+	Characters[NewInt]->SetActorLocation(GetPawn()->GetActorLocation());
+	Characters[NewInt]->SetActorRotation(GetPawn()->GetActorRotation());
+	Possess(Cast<ACPlayer>(Characters[NewInt]));
+	Temp->SetActorLocation(Location);
+	Temp->SetActorRotation(Rotation);
+	if (ChangeEffect == nullptr)
+	{
+		return;
+	}
+	if (UMyUserWidget* ChagneWidget = Cast<UMyUserWidget>(Widget))
+	{
+		ChagneWidget->ChangeCharacter(NewInt);
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ChangeEffect, GetPawn()->GetActorLocation() - FVector(0.0f, 0.0f, 150.f));
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Change %s"), *GetNameSafe(Characters[1]));
 }
+
+
+void ACPlayerController::OnCanChange()
+{
+	bCanChange = true;
+}
+	
 

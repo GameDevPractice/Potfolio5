@@ -15,7 +15,6 @@ void UCAction_Melee::StartAction_Implementation(AActor* Instigator)
 {
 	Super::StartAction_Implementation(Instigator); 
 	ACharacter* Character = Cast<ACharacter>(Instigator);
-	UCActionComponent* ActionComp = Cast<UCActionComponent>(Character->GetComponentByClass(UCActionComponent::StaticClass()));
 	if (bCombo)
 	{
 		
@@ -24,8 +23,8 @@ void UCAction_Melee::StartAction_Implementation(AActor* Instigator)
 	}
 	if (!CanAction(Instigator))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "NotCan");
-		Super::StopAction_Implementation(Instigator);
+		//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "NotCan");
+		//Super::StopAction_Implementation(Instigator);
 		return;
 	}
 	//Instigator´Â Controller
@@ -47,6 +46,7 @@ void UCAction_Melee::NextCombo(AActor* Instigator)
 {
 	if (!bSuccess && !CanAction(Instigator))
 	{
+		Super::StopAction_Implementation(Instigator);
 		return;
 	}
 	bSuccess = false;

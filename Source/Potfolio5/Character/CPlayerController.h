@@ -21,6 +21,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	TArray<ACPlayer*> GetPlayer() const { return Characters; }
+
+	UFUNCTION(BlueprintCallable)
+	float GetRate() const { return ChangeTime; }
 protected:
 	virtual void SetupInputComponent();
 
@@ -30,6 +33,10 @@ protected:
 private:
 	void ChangeCharacter1();
 	void ChangeCharacter2();
+
+	void ChangeCharactr(int32 NewInt);
+
+	void OnCanChange();
 
 protected:
 	TArray<AActor*> CharacterArray;
@@ -42,4 +49,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Particle")
 	UNiagaraSystem* ChangeEffect;
+
+	bool bCanChange; //교체가능 여부
+	UPROPERTY(EditDefaultsOnly, Category = "Change")
+	float ChangeTime;
 };
