@@ -49,7 +49,6 @@ bool UCActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
 		if (Action != nullptr && Action->ActionName == ActionName)
 		{
 			Action->StartAction(Instigator);
-			
 			return true;
 		}
 	}
@@ -63,7 +62,6 @@ bool UCActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
 		if (Action != nullptr && Action->ActionName == ActionName)
 		{
 			Action->StopAction(Instigator);
-
 			return true;
 		}
 	}

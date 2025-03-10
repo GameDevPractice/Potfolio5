@@ -12,6 +12,7 @@ ACPlayerController::ACPlayerController()
 {
 	ChangeTime = 5.0f;
 	bCanChange = true;
+	CharacterInt = 0;
 }
 
 void ACPlayerController::BeginPlay()
@@ -40,6 +41,33 @@ void ACPlayerController::BeginPlay()
 	{
 		Widget->AddToViewport();
 	}
+}
+
+void ACPlayerController::ChangeCharacterAction(ACPlayer* InAction, int32 NewInt)
+{
+	// 교체 시간 
+	FTimerHandle ChangeHandle;
+	GetWorldTimerManager().SetTimer(ChangeHandle, this, &ACPlayerController::OnCanChange, ChangeTime, false);
+	bCanChange = false;
+
+	//교체 기능
+	FVector Location = Characters[NewInt]->GetActorLocation();
+	FRotator Rotation = Characters[NewInt]->GetActorRotation();
+	Characters[NewInt]->SetActorLocation(GetPawn()->GetActorLocation());
+	Characters[NewInt]->SetActorRotation(GetPawn()->GetActorRotation());
+	Possess(Cast<ACPlayer>(Characters[NewInt]));
+	InAction->SetActorLocation(Location);
+	InAction->SetActorRotation(Rotation);
+	if (ChangeEffect == nullptr)
+	{
+		return;
+	}
+	if (UMyUserWidget* ChagneWidget = Cast<UMyUserWidget>(Widget))
+	{
+		ChagneWidget->ChangeCharacter(NewInt);
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ChangeEffect, GetPawn()->GetActorLocation() - FVector(0.0f, 0.0f, 150.f));
+	}
+	
 }
 
 void ACPlayerController::SetupInputComponent()
@@ -73,10 +101,11 @@ void ACPlayerController::ChangeCharacter2()
 
 void ACPlayerController::ChangeCharactr(int32 NewInt)
 {
+	CharacterInt = NewInt;
 	ACPlayer* Temp = Cast<ACPlayer>(GetPawn());
 	//교체 가능 판단
 	UCActionComponent* ActionComp = Cast<UCActionComponent>(Temp->GetComponentByClass(UCActionComponent::StaticClass()));
-	 if (ensure(ActionComp == nullptr))
+	 if (ActionComp == nullptr)
 	 {
 		 return;
 	 }
@@ -84,31 +113,13 @@ void ACPlayerController::ChangeCharactr(int32 NewInt)
 	{
 		return;
 	}
-	if (ActionComp->ActionTags.IsEmpty() == false)
+	if (!ActionComp->StartActionByName(Temp, "Change"))
 	{
 		return;
 	}
-	// 교체 시간 
-	FTimerHandle ChangeHandle;
-	GetWorldTimerManager().SetTimer(ChangeHandle, this, &ACPlayerController::OnCanChange, ChangeTime, false);
-	bCanChange = false;
-
-	//교체 기능
-	FVector Location = Characters[NewInt]->GetActorLocation();
-	FRotator Rotation = Characters[NewInt]->GetActorRotation();
-	Characters[NewInt]->SetActorLocation(GetPawn()->GetActorLocation());
-	Characters[NewInt]->SetActorRotation(GetPawn()->GetActorRotation());
-	Possess(Cast<ACPlayer>(Characters[NewInt]));
-	Temp->SetActorLocation(Location);
-	Temp->SetActorRotation(Rotation);
-	if (ChangeEffect == nullptr)
+	if (!ActionComp->StopActionByName(Temp, "Change"))
 	{
 		return;
-	}
-	if (UMyUserWidget* ChagneWidget = Cast<UMyUserWidget>(Widget))
-	{
-		ChagneWidget->ChangeCharacter(NewInt);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ChangeEffect, GetPawn()->GetActorLocation() - FVector(0.0f, 0.0f, 150.f));
 	}
 }
 

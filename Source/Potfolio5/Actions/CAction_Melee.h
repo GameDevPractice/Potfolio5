@@ -28,4 +28,8 @@ protected:
 	bool bCombo;
 	bool bSuccess;
 
+	UPROPERTY(EditDefaultsOnly)
+	float StopRate;
+
+	FTimerHandle StopTimer;
 };

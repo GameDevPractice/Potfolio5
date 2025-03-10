@@ -24,6 +24,12 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	float GetRate() const { return ChangeTime; }
+
+	UFUNCTION(BlueprintCallable)
+	int32 GetInt() const { return CharacterInt; }
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeCharacterAction(ACPlayer* InAction, int32 NewInt);
 protected:
 	virtual void SetupInputComponent();
 
@@ -53,4 +59,6 @@ protected:
 	bool bCanChange; //교체가능 여부
 	UPROPERTY(EditDefaultsOnly, Category = "Change")
 	float ChangeTime;
+
+	int32 CharacterInt;
 };
