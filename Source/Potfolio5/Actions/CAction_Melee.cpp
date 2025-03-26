@@ -1,6 +1,7 @@
 #include "Actions/CAction_Melee.h"
 #include "GameFramework/Character.h"
 #include "Component/CActionComponent.h"
+#include "Character/CPlayer.h"
 
 UCAction_Melee::UCAction_Melee()
 {
@@ -17,6 +18,8 @@ void UCAction_Melee::StartAction_Implementation(AActor* Instigator)
 	
 	Super::StartAction_Implementation(Instigator);
 
+	ACPlayer* Player = Cast<ACPlayer>(Instigator);
+	
 	ACharacter* Character = Cast<ACharacter>(Instigator);
 	FTimerDelegate StopDelegate = FTimerDelegate::CreateUObject(this, &UCAction_Melee::StopAction_Implementation, Instigator);
 	if (!GetWorld(Instigator)->GetTimerManager().IsTimerActive(StopTimer))
@@ -26,12 +29,10 @@ void UCAction_Melee::StartAction_Implementation(AActor* Instigator)
 	if (bCombo)
 	{
 		bSuccess = true;
-		GEngine->AddOnScreenDebugMessage(6, 1.f, FColor::Cyan, TEXT("bCombo is true"));
 		return;
 	}
 	if (!CanAction(Instigator))
 	{
-		GEngine->AddOnScreenDebugMessage(7, 1.f, FColor::Red, TEXT("CanAction is false"));
 		return;
 	}
 	//Instigator´Â Controller
@@ -39,6 +40,10 @@ void UCAction_Melee::StartAction_Implementation(AActor* Instigator)
 	{
 		Character->PlayAnimMontage(ActionMontages[0]);
 		bIsRunning = true;
+		if (Player != nullptr)
+		{
+			Player->PlayEquip();
+		}
 	}
 }
 
@@ -48,11 +53,28 @@ void UCAction_Melee::StopAction_Implementation(AActor* Instigator)
 	ActionVaule = 0;
 	bIsRunning = false;
 	bCombo = false;
-	if (!GetWorld(Instigator)->GetTimerManager().IsTimerActive(StopTimer))
+	if (GetWorld(Instigator)->GetTimerManager().IsTimerActive(StopTimer))
 	{
 		GetWorld(Instigator)->GetTimerManager().ClearTimer(StopTimer);
 	}
-	GEngine->AddOnScreenDebugMessage(5, 1.f, FColor::Green, TEXT("StopAction"));
+	FTimerHandle AuraTimer;
+	FTimerDelegate UnEquipDelegate = FTimerDelegate::CreateUObject(this, &UCAction_Melee::PlayUnEquip, Instigator);
+	if (!GetWorld(Instigator)->GetTimerManager().IsTimerActive(AuraTimer))
+	{
+		GetWorld(Instigator)->GetTimerManager().SetTimer(AuraTimer, UnEquipDelegate, 10.0f, false);
+	}
+}
+
+void UCAction_Melee::PlayUnEquip(AActor* Instigator)
+{
+	ACPlayer* Player = Cast<ACPlayer>(Instigator);
+	if (Player != nullptr)
+	{
+		if (!bIsRunning)
+		{
+		Player->PlayUnEquip();
+		}
+	}
 }
 
 void UCAction_Melee::NextCombo(AActor* Instigator)

@@ -38,6 +38,7 @@ private:
 
  
 public:
+	//Action
 	UFUNCTION(BlueprintNativeEvent, Category = "Attack")
 	 void FirstAttack();
 	UFUNCTION(BlueprintNativeEvent, Category = "Attack")
@@ -49,10 +50,10 @@ public:
 
 	void Jump();
 
-	FORCEINLINE void EndbAttacking() { bAttacking = false; }
+	//Equip,UnEquip
+	void PlayEquip();
+	void PlayUnEquip();
 	void StartMovement();
-
-
 
 	FORCEINLINE FTransform GetSpringArmTransform() const { return SpringArm->GetComponentTransform(); }
 	void SetSpringArmTransform(FTransform NewTransform);
@@ -61,7 +62,6 @@ protected:
 	void StartSprint();
 	void StopSprint();
 
-	void CheckAura();
 
 protected:
 	UFUNCTION(BlueprintCallable)
@@ -76,11 +76,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	USpringArmComponent* SpringArm;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Particle")
-	UNiagaraComponent* RightNiarara;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Particle")
-	UNiagaraComponent* LeftNiarara;
 
 	UPROPERTY(EditDefaultsOnly)
 	UAnimMontage* UnEquipMontage;
@@ -94,8 +90,11 @@ protected:
 	UTexture2D* Image;
 
 
-	bool bAttacking;
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	bool bEquip;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	bool Overlapped;
+	UMaterialInterface* OverlayMaterial;
 
 };

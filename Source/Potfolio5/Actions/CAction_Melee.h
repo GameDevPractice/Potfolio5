@@ -4,6 +4,7 @@
 #include "Actions/CAction.h"
 #include "CAction_Melee.generated.h"
 
+
 UCLASS()
 class POTFOLIO5_API UCAction_Melee : public UCAction
 {
@@ -20,6 +21,8 @@ public:
 private:
 	void StartAction_Implementation(AActor* Instigator) override;
 	void StopAction_Implementation(AActor* Instigator) override;
+
+	void PlayUnEquip(AActor* Instigator);
 
 protected:
 	UPROPERTY(EditDefaultsOnly)

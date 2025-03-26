@@ -6,7 +6,7 @@
 
 class ACPlayer;
 
-UCLASS()
+UCLASS(meta = (BlueprintThreadSafe))
 class POTFOLIO5_API UCAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()

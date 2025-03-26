@@ -2,7 +2,6 @@
 #include "Engine/SkeletalMesh.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
-#include "NiagaraComponent.h"
 #include "Component/CActionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -36,30 +35,21 @@ ACPlayer::ACPlayer()
 	ActionComp = CreateDefaultSubobject<UCActionComponent>(TEXT("ActionComp"));
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
-	
-	
-	RightNiarara = CreateDefaultSubobject<UNiagaraComponent>(TEXT("RightNiarara"));
-	LeftNiarara = CreateDefaultSubobject<UNiagaraComponent>(TEXT("LeftNiarara"));
 
-	bAttacking = false;
 	bEquip = false;
+
+	//Material
+	 ConstructorHelpers::FObjectFinder<UMaterialInterface> MaterialAsset(TEXT(" / Script / Engine.Material'/Game/Itadori_aura/Material/M_NewMaterial1.M_NewMaterial1'"));
+	 if (MaterialAsset.Succeeded())
+	 {
+		 OverlayMaterial = MaterialAsset.Object;
+	 }
+	 Overlapped = false;
 }
 
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	if (RightNiarara != nullptr)
-	{
-		RightNiarara->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, "hand_r_Sockat");
-		RightNiarara->SetVisibility(false);
-	}
-	if (LeftNiarara != nullptr)
-	{
-		LeftNiarara->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, "hand_l_Sockat");
-		LeftNiarara->SetVisibility(false);
-	}
-
-	
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -142,44 +132,11 @@ void ACPlayer::StopSprint()
 	ActionComp->StopActionByName(this, "Sprint");
 }
 
-void ACPlayer::CheckAura()
-{
-	if (bAttacking == false)
-	{
-		RightNiarara->SetVisibility(false);
-		LeftNiarara->SetVisibility(false);
-		bEquip = false;
-		if (UnEquipMontage != nullptr)
-		{
-		PlayAnimMontage(UnEquipMontage);
-		GetCharacterMovement()->SetActive(false);
-		}
-	}
-}
+
 
 void ACPlayer::FirstAttack_Implementation()
 {
-	
-	if (ActionComp->StartActionByName(this, "First"))
-	{
-		FTimerHandle AuraTimer;
-		if (!GetWorldTimerManager().IsTimerActive(AuraTimer))
-		{
-			GetWorldTimerManager().SetTimer(AuraTimer, this, &ACPlayer::CheckAura, 10.0f, false);
-		}
-		bEquip = true;
-		bAttacking = true;
-	if (RightNiarara != nullptr)
-	{
-		RightNiarara->SetVisibility(true);
-	}
-	if (LeftNiarara != nullptr)
-	{
-		LeftNiarara->SetVisibility(true);
-	}
-
-	
-	}
+	ActionComp->StartActionByName(this, "First");
 }
 
 void ACPlayer::SecondAttack_Implementation()
@@ -195,4 +152,28 @@ void ACPlayer::ThridAttack_Implementation()
 void ACPlayer::ForthAttack_Implementation()
 {
 	UE_LOG(LogTemp, Log, TEXT("ForthAttack"));
+}
+
+void ACPlayer::PlayEquip()
+{
+	bEquip = true;
+	GetCharacterMovement()->SetActive(true);
+	if (Overlapped)
+	{
+	GetMesh()->SetOverlayMaterial(OverlayMaterial);
+	}
+}
+
+void ACPlayer::PlayUnEquip()
+{
+	if (UnEquipMontage != nullptr)
+	{
+		PlayAnimMontage(UnEquipMontage);
+		GetCharacterMovement()->SetActive(false);
+	}
+	bEquip = false;
+	if (Overlapped)
+	{
+	GetMesh()->SetOverlayMaterial(nullptr);
+	}
 }
