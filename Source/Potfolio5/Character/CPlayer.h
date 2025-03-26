@@ -2,11 +2,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "CPlayer.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
 class UCActionComponent;
+class UNiagaraComponent;
 
 UCLASS()
 class POTFOLIO5_API ACPlayer : public ACharacter
@@ -47,9 +49,19 @@ public:
 
 	void Jump();
 
+	FORCEINLINE void EndbAttacking() { bAttacking = false; }
+	void StartMovement();
+
+
+
+	FORCEINLINE FTransform GetSpringArmTransform() const { return SpringArm->GetComponentTransform(); }
+	void SetSpringArmTransform(FTransform NewTransform);
+
 protected:
 	void StartSprint();
 	void StopSprint();
+
+	void CheckAura();
 
 protected:
 	UFUNCTION(BlueprintCallable)
@@ -64,6 +76,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	USpringArmComponent* SpringArm;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Particle")
+	UNiagaraComponent* RightNiarara;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Particle")
+	UNiagaraComponent* LeftNiarara;
+
+	UPROPERTY(EditDefaultsOnly)
+	UAnimMontage* UnEquipMontage;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
@@ -72,5 +92,10 @@ protected:
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Character")
 	UTexture2D* Image;
+
+
+	bool bAttacking;
+	UPROPERTY(BlueprintReadWrite)
+	bool bEquip;
 
 };

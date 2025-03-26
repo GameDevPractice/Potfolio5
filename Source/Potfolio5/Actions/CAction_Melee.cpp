@@ -7,7 +7,7 @@ UCAction_Melee::UCAction_Melee()
 	ActionVaule = 0;
 	bCombo = false;
 	bSuccess = false;
-	StopRate = 3.0f;
+	StopRate = 1.0f;
 }
 
 
@@ -26,16 +26,17 @@ void UCAction_Melee::StartAction_Implementation(AActor* Instigator)
 	if (bCombo)
 	{
 		bSuccess = true;
+		GEngine->AddOnScreenDebugMessage(6, 1.f, FColor::Cyan, TEXT("bCombo is true"));
 		return;
 	}
 	if (!CanAction(Instigator))
 	{
+		GEngine->AddOnScreenDebugMessage(7, 1.f, FColor::Red, TEXT("CanAction is false"));
 		return;
 	}
 	//Instigator´Â Controller
 	if ( IsValid(ActionMontages[0]))
 	{
-		GetWorld(Instigator)->GetTimerManager().ClearTimer(StopTimer);
 		Character->PlayAnimMontage(ActionMontages[0]);
 		bIsRunning = true;
 	}
@@ -46,19 +47,22 @@ void UCAction_Melee::StopAction_Implementation(AActor* Instigator)
 	Super::StopAction_Implementation(Instigator);
 	ActionVaule = 0;
 	bIsRunning = false;
-	GetWorld(Instigator)->GetTimerManager().ClearTimer(StopTimer);
+	bCombo = false;
+	if (!GetWorld(Instigator)->GetTimerManager().IsTimerActive(StopTimer))
+	{
+		GetWorld(Instigator)->GetTimerManager().ClearTimer(StopTimer);
+	}
 	GEngine->AddOnScreenDebugMessage(5, 1.f, FColor::Green, TEXT("StopAction"));
 }
 
 void UCAction_Melee::NextCombo(AActor* Instigator)
 {
-	if (!bSuccess && !CanAction(Instigator))
+	if (!bSuccess )
 	{
-		Super::StopAction_Implementation(Instigator);
 		return;
 	}
 	bSuccess = false;
-	
+	GetWorld(Instigator)->GetTimerManager().ClearTimer(StopTimer);
 	ActionVaule++;
 	ActionVaule = FMath::Clamp(ActionVaule, 0, ActionMontages.Num() - 1);
 	ACharacter* Character = Cast<ACharacter>(Instigator);

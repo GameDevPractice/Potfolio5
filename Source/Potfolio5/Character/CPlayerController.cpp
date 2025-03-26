@@ -30,7 +30,6 @@ void ACPlayerController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No Character"));
 	}
-	GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Red, TEXT("Controller Begin Play"));
 
 	if (WidgetClass)
 	{
@@ -41,6 +40,7 @@ void ACPlayerController::BeginPlay()
 	{
 		Widget->AddToViewport();
 	}
+
 }
 
 void ACPlayerController::ChangeCharacterAction(ACPlayer* InAction, int32 NewInt)
@@ -76,6 +76,7 @@ void ACPlayerController::SetupInputComponent()
 
 	InputComponent->BindAction("Change1", EInputEvent::IE_Pressed, this, &ACPlayerController::ChangeCharacter1);
 	InputComponent->BindAction("Change2", EInputEvent::IE_Pressed, this, &ACPlayerController::ChangeCharacter2);
+	InputComponent->BindAction("Change3", EInputEvent::IE_Pressed, this, &ACPlayerController::ChangeCharacter3);
 }
 
 void ACPlayerController::AddCharacter(ACPlayer* InCharacter)
@@ -93,9 +94,25 @@ void ACPlayerController::ChangeCharacter1()
 
 void ACPlayerController::ChangeCharacter2()
 {
+	if ((Characters.Num() < 2))
+	{
+		return;
+	}
 	if (ensure(Characters[1] != nullptr) && Characters[1] != Cast<ACPlayer>(GetPawn()))
 	{
 		ChangeCharactr(1);
+	}
+}
+
+void ACPlayerController::ChangeCharacter3()
+{
+	if ((Characters.Num() < 3))
+	{
+		return;
+	}
+	if (ensure(Characters[2] != nullptr) && Characters[2] != Cast<ACPlayer>(GetPawn()))
+	{
+		ChangeCharactr(2);
 	}
 }
 

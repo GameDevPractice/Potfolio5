@@ -40,6 +40,8 @@ private:
 	void ChangeCharacter1();
 	void ChangeCharacter2();
 
+	void ChangeCharacter3();
+
 	void ChangeCharactr(int32 NewInt);
 
 	void OnCanChange();

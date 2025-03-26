@@ -29,5 +29,7 @@ void UCAnimNotify_EndAction::Notify(USkeletalMeshComponent* MeshComp, UAnimSeque
                 }
             }
         }
+		ACPlayer* Player = Cast<ACPlayer>(Owner);
+		Player->EndbAttacking();
 	}
 }

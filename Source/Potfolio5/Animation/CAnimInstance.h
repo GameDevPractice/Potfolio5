@@ -4,6 +4,8 @@
 #include "Animation/AnimInstance.h"
 #include "CAnimInstance.generated.h"
 
+class ACPlayer;
+
 UCLASS()
 class POTFOLIO5_API UCAnimInstance : public UAnimInstance
 {
@@ -12,10 +14,14 @@ class POTFOLIO5_API UCAnimInstance : public UAnimInstance
 protected:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	UFUNCTION(BlueprintCallable)
+	ACPlayer* GetPlayer() const { return Player; }
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	float Speed;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	float Direction;
+
+	ACPlayer* Player;
 };

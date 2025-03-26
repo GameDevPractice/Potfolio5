@@ -14,10 +14,11 @@ void UCAnimInstance::NativeBeginPlay()
 void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
-	ACPlayer* Player = Cast<ACPlayer>(GetOwningActor());
+	Player = Cast<ACPlayer>(GetOwningActor());
 	if (Player)
 	{
 		Speed = Player->GetVelocity().Size();
+		Direction = CalculateDirection(Player->GetVelocity(), Player->GetActorRotation());
 	}
 
 }
