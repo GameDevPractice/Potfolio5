@@ -166,6 +166,10 @@ void ACPlayer::PlayEquip()
 
 void ACPlayer::PlayUnEquip()
 {
+	if (!bEquip)
+	{
+		return;
+	}
 	if (UnEquipMontage != nullptr)
 	{
 		PlayAnimMontage(UnEquipMontage);
