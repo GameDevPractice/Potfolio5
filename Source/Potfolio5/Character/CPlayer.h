@@ -62,6 +62,8 @@ protected:
 	void StartSprint();
 	void StopSprint();
 
+	//Todo. Collision Overlap
+
 
 protected:
 	UFUNCTION(BlueprintCallable)
