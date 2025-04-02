@@ -35,4 +35,5 @@ protected:
 	float StopRate;
 
 	FTimerHandle StopTimer;
+	FTimerHandle AuraTimer;
 };

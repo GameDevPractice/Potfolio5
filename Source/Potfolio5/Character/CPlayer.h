@@ -9,6 +9,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class UCActionComponent;
 class UNiagaraComponent;
+class UCapsuleComponent;
 
 UCLASS()
 class POTFOLIO5_API ACPlayer : public ACharacter
@@ -55,8 +56,7 @@ public:
 	void PlayUnEquip();
 	void StartMovement();
 
-	FORCEINLINE FTransform GetSpringArmTransform() const { return SpringArm->GetComponentTransform(); }
-	void SetSpringArmTransform(FTransform NewTransform);
+	FORCEINLINE UCapsuleComponent* GetCapsuleComponent() const { return Capsule; }
 
 protected:
 	void StartSprint();
@@ -75,7 +75,8 @@ protected:
 	UCameraComponent* Camera;
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	USpringArmComponent* SpringArm;
-
+	UPROPERTY(EditDefaultsOnly)
+	UCapsuleComponent* Capsule;
 
 
 	UPROPERTY(EditDefaultsOnly)

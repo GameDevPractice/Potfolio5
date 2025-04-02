@@ -27,6 +27,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Action")
 	bool IsRunning() const { return bIsRunning; }
 
+	UFUNCTION(BlueprintCallable)
 	UWorld* GetWorld(AActor* Actor);
 
 protected:

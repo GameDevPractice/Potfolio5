@@ -15,7 +15,6 @@ UCAction_Melee::UCAction_Melee()
 
 void UCAction_Melee::StartAction_Implementation(AActor* Instigator)
 {
-	
 	Super::StartAction_Implementation(Instigator);
 
 	ACPlayer* Player = Cast<ACPlayer>(Instigator);
@@ -25,6 +24,10 @@ void UCAction_Melee::StartAction_Implementation(AActor* Instigator)
 	if (!GetWorld(Instigator)->GetTimerManager().IsTimerActive(StopTimer))
 	{
 		GetWorld(Instigator)->GetTimerManager().SetTimer(StopTimer, StopDelegate, StopRate, false);
+	}
+	if (GetWorld(Instigator)->GetTimerManager().IsTimerActive(AuraTimer))
+	{
+		GetWorld(Instigator)->GetTimerManager().ClearTimer(AuraTimer);
 	}
 	if (bCombo)
 	{
@@ -57,7 +60,7 @@ void UCAction_Melee::StopAction_Implementation(AActor* Instigator)
 	{
 		GetWorld(Instigator)->GetTimerManager().ClearTimer(StopTimer);
 	}
-	FTimerHandle AuraTimer;
+	
 	FTimerDelegate UnEquipDelegate = FTimerDelegate::CreateUObject(this, &UCAction_Melee::PlayUnEquip, Instigator);
 	if (!GetWorld(Instigator)->GetTimerManager().IsTimerActive(AuraTimer))
 	{

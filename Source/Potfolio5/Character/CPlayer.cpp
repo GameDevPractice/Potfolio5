@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "Component/CActionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 
 ACPlayer::ACPlayer()
 {
@@ -14,6 +15,11 @@ ACPlayer::ACPlayer()
 
 	bUseControllerRotationYaw = false;
 
+	//AttackCollision
+	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("AttackCollision"));
+	Capsule->SetupAttachment(GetMesh());
+
+	//camera
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(GetMesh());
 	SpringArm->SetRelativeLocation(FVector(0.0f, 0.0f, 150.f));
@@ -117,10 +123,6 @@ void ACPlayer::StartMovement()
 	GetCharacterMovement()->SetActive(true);
 }
 
-void ACPlayer::SetSpringArmTransform(FTransform NewTransform)
-{
-	SpringArm->SetWorldTransform(NewTransform);
-}
 
 void ACPlayer::StartSprint()
 {
@@ -166,10 +168,9 @@ void ACPlayer::PlayEquip()
 
 void ACPlayer::PlayUnEquip()
 {
-	if (!bEquip)
+	if (bEquip)
 	{
-		return;
-	}
+
 	if (UnEquipMontage != nullptr)
 	{
 		PlayAnimMontage(UnEquipMontage);
@@ -179,5 +180,6 @@ void ACPlayer::PlayUnEquip()
 	if (Overlapped)
 	{
 	GetMesh()->SetOverlayMaterial(nullptr);
+	}
 	}
 }
