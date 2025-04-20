@@ -1,0 +1,33 @@
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Components/ActorComponent.h"
+#include "CAttributeComponent.generated.h"
+
+
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class POTFOLIO5_API UCAttributeComponent : public UActorComponent
+{
+	GENERATED_BODY()
+
+public:	
+	UCAttributeComponent();
+
+protected:
+	virtual void BeginPlay() override;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	float DamageHealth(float DamageAmount, AActor* DamagedActor);
+
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Attribute")
+	float Health;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Attribute")
+	float Stamina;
+
+
+		
+};

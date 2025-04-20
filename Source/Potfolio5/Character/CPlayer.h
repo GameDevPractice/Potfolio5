@@ -10,6 +10,9 @@ class USpringArmComponent;
 class UCActionComponent;
 class UNiagaraComponent;
 class UCapsuleComponent;
+class UCAttributeComponent;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBeginOverlap, UPrimitiveComponent*, OverlappedComp, const FHitResult&, SweepResult);
 
 UCLASS()
 class POTFOLIO5_API ACPlayer : public ACharacter
@@ -55,16 +58,20 @@ public:
 	void PlayEquip();
 	void PlayUnEquip();
 	void StartMovement();
+	void SetEquip();
+	void SetUnEquip();
 
 	FORCEINLINE UCapsuleComponent* GetCapsuleComponent() const { return Capsule; }
+	virtual void StopJumping();
 
 protected:
 	void StartSprint();
 	void StopSprint();
 
 	//Todo. Collision Overlap
-
-
+protected:
+	UFUNCTION()
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 protected:
 	UFUNCTION(BlueprintCallable)
 	UTexture2D* GetImage() const { return Image; }
@@ -84,9 +91,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	UAnimMontage* UnEquipMontage;
 
+
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	UCActionComponent* ActionComp;
+
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
+	UCAttributeComponent* AttributeComp;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Character")
@@ -99,5 +110,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	bool Overlapped;
 	UMaterialInterface* OverlayMaterial;
+
+public:
+	UPROPERTY()
+	FOnBeginOverlap OnBeginOverlap;
+
 
 };

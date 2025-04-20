@@ -3,6 +3,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Component/CActionComponent.h"
+#include "Component/CAttributeComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 
@@ -39,6 +40,7 @@ ACPlayer::ACPlayer()
 
 	//Components
 	ActionComp = CreateDefaultSubobject<UCActionComponent>(TEXT("ActionComp"));
+	AttributeComp = CreateDefaultSubobject<UCAttributeComponent>(TEXT("AttributeComp"));
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 
@@ -56,6 +58,7 @@ ACPlayer::ACPlayer()
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+	Capsule->OnComponentBeginOverlap.AddDynamic(this, &ACPlayer::OnOverlapBegin);
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -87,20 +90,19 @@ void ACPlayer::MoveForward(float Value)
 {
 	FRotator ControlRotation = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector Direction = FQuat(ControlRotation).GetForwardVector();
-	AddMovementInput(GetActorForwardVector(), Value);
+	AddMovementInput(Direction, Value);
 }
 
 void ACPlayer::MoveRight(float Value)
 {
 	FRotator ControlRotation = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector Direction = FQuat(ControlRotation).GetRightVector();
-	AddMovementInput(GetActorRightVector(), Value);
+	AddMovementInput(Direction, Value);
 }
 
 void ACPlayer::ActionJump()
 {
 	ActionComp->StartActionByName(this, "Jump");
-	
 }
 
 void ACPlayer::PitchUp(float Vaule)
@@ -123,6 +125,23 @@ void ACPlayer::StartMovement()
 	GetCharacterMovement()->SetActive(true);
 }
 
+void ACPlayer::SetEquip()
+{
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	bUseControllerRotationRoll = true;
+}
+
+void ACPlayer::SetUnEquip()
+{
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationRoll = false;
+}
+
+
+void ACPlayer::StopJumping()
+{
+	Super::StopJumping();
+}
 
 void ACPlayer::StartSprint()
 {
@@ -132,6 +151,20 @@ void ACPlayer::StartSprint()
 void ACPlayer::StopSprint()
 {
 	ActionComp->StopActionByName(this, "Sprint");
+}
+
+void ACPlayer::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if ( OtherActor == this )
+	{
+		return;
+	}
+	if (OnBeginOverlap.IsBound())
+	{
+		//Bind Path is CAction_Melee
+		OnBeginOverlap.Broadcast(OverlappedComp, SweepResult);
+		return;
+	}
 }
 
 

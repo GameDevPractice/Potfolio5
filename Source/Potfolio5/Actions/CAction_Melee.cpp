@@ -1,7 +1,9 @@
 #include "Actions/CAction_Melee.h"
 #include "GameFramework/Character.h"
 #include "Component/CActionComponent.h"
+#include "Component/CAttributeComponent.h"
 #include "Character/CPlayer.h"
+#include "Kismet/GameplayStatics.h"
 
 UCAction_Melee::UCAction_Melee()
 {
@@ -9,6 +11,7 @@ UCAction_Melee::UCAction_Melee()
 	bCombo = false;
 	bSuccess = false;
 	StopRate = 1.0f;
+	Damage = 10.f;
 }
 
 
@@ -18,7 +21,11 @@ void UCAction_Melee::StartAction_Implementation(AActor* Instigator)
 	Super::StartAction_Implementation(Instigator);
 
 	ACPlayer* Player = Cast<ACPlayer>(Instigator);
-	
+	//Check Binded and Bind
+	if (!Player->OnBeginOverlap.IsBound())
+	{
+	Player->OnBeginOverlap.AddDynamic(this, &UCAction_Melee::MeleeOverlap);
+	}
 	ACharacter* Character = Cast<ACharacter>(Instigator);
 	FTimerDelegate StopDelegate = FTimerDelegate::CreateUObject(this, &UCAction_Melee::StopAction_Implementation, Instigator);
 	if (!GetWorld(Instigator)->GetTimerManager().IsTimerActive(StopTimer))
@@ -46,6 +53,7 @@ void UCAction_Melee::StartAction_Implementation(AActor* Instigator)
 		if (Player != nullptr)
 		{
 			Player->PlayEquip();
+			
 		}
 	}
 }
@@ -66,6 +74,9 @@ void UCAction_Melee::StopAction_Implementation(AActor* Instigator)
 	{
 		GetWorld(Instigator)->GetTimerManager().SetTimer(AuraTimer, UnEquipDelegate, 10.0f, false);
 	}
+	ACPlayer* Player = Cast<ACPlayer>(Instigator);
+	Player->OnBeginOverlap.Clear();
+	
 }
 
 void UCAction_Melee::PlayUnEquip(AActor* Instigator)
@@ -78,6 +89,39 @@ void UCAction_Melee::PlayUnEquip(AActor* Instigator)
 		Player->PlayUnEquip();
 		}
 	}
+	if (!GetWorld(Instigator)->GetTimerManager().IsTimerActive(AuraTimer))
+	{
+		GetWorld(Instigator)->GetTimerManager().ClearTimer(AuraTimer);
+	}
+}
+
+void UCAction_Melee::MeleeOverlap(UPrimitiveComponent* OverlappedComp, const FHitResult& SweepResult)
+{
+	//Check OtherActor
+	AActor* OtherActor = SweepResult.GetActor();
+	if (OtherActor == nullptr)
+	{
+		return;
+	}
+	//Check ActionComponent
+	UCActionComponent* ActionComp = Cast<UCActionComponent>(OtherActor->GetComponentByClass(UCActionComponent::StaticClass()));
+	if (ActionComp == nullptr)
+	{
+		return;
+	}
+	//Action Start
+	ActionComp->StartActionByName(OtherActor, "Hit");
+
+	//Check AttributeComponent and Apply Damage
+	UCAttributeComponent* AttributeComp = Cast<UCAttributeComponent>(OtherActor->GetComponentByClass(UCAttributeComponent::StaticClass()));
+	if (AttributeComp == nullptr)
+	{
+		return;
+	}
+	float realDamage = AttributeComp->DamageHealth(Damage, OtherActor);
+	UGameplayStatics::ApplyDamage(OtherActor, realDamage, OverlappedComp->GetOwner()->GetInstigatorController(), OverlappedComp->GetOwner(), UDamageType::StaticClass());
+	
+
 }
 
 void UCAction_Melee::NextCombo(AActor* Instigator)

@@ -24,9 +24,15 @@ private:
 
 	void PlayUnEquip(AActor* Instigator);
 
+	UFUNCTION()
+	void MeleeOverlap(UPrimitiveComponent* OverlappedComp, const FHitResult& SweepResult);
+
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	int32 ActionVaule;
+
+	UPROPERTY(EditDefaultsOnly)
+	float Damage;
 
 	bool bCombo;
 	bool bSuccess;

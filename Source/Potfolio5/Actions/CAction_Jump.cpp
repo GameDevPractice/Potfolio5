@@ -1,6 +1,7 @@
 #include "Actions/CAction_Jump.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
+#include "Character/CPlayer.h"
 
 UCAction_Jump::UCAction_Jump()
 {
@@ -14,15 +15,15 @@ void UCAction_Jump::StartAction_Implementation(AActor* Instigator)
 	Super::StartAction_Implementation(Instigator);
 	if (CanAction(Instigator))
 	{
-		Character = Cast<ACharacter>(Instigator);
-		if (Character == nullptr)
+		ACPlayer* Player = Cast<ACPlayer>(Instigator);
+		if (Player == nullptr)
 		{
 			return;
 		}
-		if (Character->CanJump())
+		if (Player->CanJump())
 		{
-			Character->Jump();
-			Character->GetWorldTimerManager().SetTimer(TimerHandle, this, &UCAction_Jump::StopJump, .7f,false);
+			Player->Jump();
+			Player->GetWorldTimerManager().SetTimer(TimerHandle, this, &UCAction_Jump::StopJump, 1.1f,false);
 			return;
 		}
 		
@@ -36,14 +37,13 @@ void UCAction_Jump::StopAction_Implementation(AActor* Instigator)
 {
 	Super::StopAction_Implementation(Instigator);
 	
-		Character = Cast<ACharacter>(Instigator);
-		if (Character == nullptr)
-		{
-			return;
-		}
-		Character->StopJumping();
-		Character->GetWorldTimerManager().ClearTimer(TimerHandle);
-	
+	ACPlayer* Player = Cast<ACPlayer>(Instigator);
+	if (Player == nullptr)
+	{
+		return;
+	}
+	Player->StopJumping();
+	Player->GetWorldTimerManager().ClearTimer(TimerHandle);
 }
 
 void UCAction_Jump::StopJump()

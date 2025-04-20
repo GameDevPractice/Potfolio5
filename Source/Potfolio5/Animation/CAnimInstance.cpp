@@ -9,16 +9,18 @@ void UCAnimInstance::NativeBeginPlay()
 
 	Speed = 0.f;
 	Direction = 0.f;
+	Hight = 0.f;
 }
 
 void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
-	Player = Cast<ACPlayer>(GetOwningActor());
-	if (Player)
+	player = Cast<ACPlayer>(TryGetPawnOwner());
+	if (player)
 	{
-		Speed = Player->GetVelocity().Size();
-		Direction = CalculateDirection(Player->GetVelocity(), Player->GetActorRotation());
+		Speed = player->GetVelocity().Size2D();
+		Direction = CalculateDirection(player->GetVelocity(), player->GetActorRotation());
+		Hight = player->GetVelocity().Z;
 	}
 
 }

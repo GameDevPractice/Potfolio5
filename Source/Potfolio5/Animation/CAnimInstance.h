@@ -15,13 +15,14 @@ protected:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	UFUNCTION(BlueprintCallable)
-	ACPlayer* GetPlayer() const { return Player; }
+	ACPlayer* GetPlayer() const { return player; }
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	float Speed;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	float Direction;
-
-	ACPlayer* Player;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	float Hight;
+	ACPlayer* player;
 };
