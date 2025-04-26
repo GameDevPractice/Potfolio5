@@ -11,6 +11,7 @@ class UCActionComponent;
 class UNiagaraComponent;
 class UCapsuleComponent;
 class UCAttributeComponent;
+class UCMontageComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBeginOverlap, UPrimitiveComponent*, OverlappedComp, const FHitResult&, SweepResult);
 
@@ -88,16 +89,16 @@ protected:
 	UCapsuleComponent* Capsule;
 
 
-	UPROPERTY(EditDefaultsOnly)
-	UAnimMontage* UnEquipMontage;
-
-
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	UCActionComponent* ActionComp;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	UCAttributeComponent* AttributeComp;
+
+	//¸ùÅ¸Áö °ü¸® ÄÄÆ÷³ÍÆ®
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
+	UCMontageComponent* MontageComp;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Character")

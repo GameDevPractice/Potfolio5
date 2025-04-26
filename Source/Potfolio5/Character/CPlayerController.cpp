@@ -17,20 +17,7 @@ ACPlayerController::ACPlayerController()
 
 void ACPlayerController::BeginPlay()
 {
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACPlayer::StaticClass(), CharacterArray);
-	if (CharacterArray.Num() > 0)
-	{
-		for (auto NewCharacter : CharacterArray)
-		{
-			Characters.Add(Cast<ACPlayer>(NewCharacter));
-		}
-		Characters[0] = Cast<ACPlayer>(GetPawn());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("No Character"));
-	}
-
+	Characters[0] = Cast<ACPlayer>(GetPawn());
 	if (WidgetClass)
 	{
 	Widget = CreateWidget(this, WidgetClass);

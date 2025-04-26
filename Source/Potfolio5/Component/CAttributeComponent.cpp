@@ -1,4 +1,5 @@
 #include "Component/CAttributeComponent.h"
+#include "Component/CActionComponent.h"
 #include "Engine/DamageEvents.h"
 
 UCAttributeComponent::UCAttributeComponent()
@@ -15,20 +16,32 @@ void UCAttributeComponent::BeginPlay()
 	
 }
 
-float UCAttributeComponent::DamageHealth(float DamageAmount, AActor* DamagedActor)
+float UCAttributeComponent::DamageHealth(float DamageAmount, AActor* DamagedActor, AActor* Instigator)
 {
+	UCActionComponent* ActionComp = Cast<UCActionComponent>(DamagedActor->GetComponentByClass(UCActionComponent::StaticClass()));
+	if (ActionComp == nullptr)
+	{
+		return 0.f;
+	}
 	//TakeDamage
 	if (DamageAmount <= 0.f)
 	{
 		return 0.f;
 	}
 	FDamageEvent DamageEvent;
-	float realDamage = DamagedActor->TakeDamage(DamageAmount, DamageEvent,GetOwner()->GetInstigatorController(), GetOwner());
+	float realDamage = DamagedActor->TakeDamage(DamageAmount, DamageEvent, Instigator->GetInstigatorController(), nullptr);
 	Health -= realDamage;
 	if (Health <= 0.f)
 	{
 		//Death logic
+		
+		ActionComp->StartActionByName(DamagedActor, "Death");
 		return 0.f;
+	}
+	else
+	{
+		//Action Start -> Attacker is Instigator
+		ActionComp->StartActionByName(Instigator, "Hit");
 	}
 	return realDamage;
 }

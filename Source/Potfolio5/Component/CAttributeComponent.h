@@ -18,7 +18,10 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable)
-	float DamageHealth(float DamageAmount, AActor* DamagedActor);
+	float DamageHealth(float DamageAmount, AActor* DamagedActor, AActor* Instigator);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetHealth() const { return Health; }
 
 
 protected:

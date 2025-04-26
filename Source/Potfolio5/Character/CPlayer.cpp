@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "Component/CActionComponent.h"
 #include "Component/CAttributeComponent.h"
+#include "Component/CMontageComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 
@@ -41,6 +42,7 @@ ACPlayer::ACPlayer()
 	//Components
 	ActionComp = CreateDefaultSubobject<UCActionComponent>(TEXT("ActionComp"));
 	AttributeComp = CreateDefaultSubobject<UCAttributeComponent>(TEXT("AttributeComp"));
+	MontageComp = CreateDefaultSubobject<UCMontageComponent>(TEXT("MontageComp"));
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 
@@ -172,6 +174,7 @@ void ACPlayer::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Other
 void ACPlayer::FirstAttack_Implementation()
 {
 	ActionComp->StartActionByName(this, "First");
+	bEquip = true;
 }
 
 void ACPlayer::SecondAttack_Implementation()
@@ -191,7 +194,7 @@ void ACPlayer::ForthAttack_Implementation()
 
 void ACPlayer::PlayEquip()
 {
-	bEquip = true;
+	
 	GetCharacterMovement()->SetActive(true);
 	if (Overlapped)
 	{
@@ -203,16 +206,11 @@ void ACPlayer::PlayUnEquip()
 {
 	if (bEquip)
 	{
-
-	if (UnEquipMontage != nullptr)
-	{
-		PlayAnimMontage(UnEquipMontage);
-		GetCharacterMovement()->SetActive(false);
-	}
-	bEquip = false;
-	if (Overlapped)
-	{
-	GetMesh()->SetOverlayMaterial(nullptr);
-	}
+		MontageComp->PlayunEquip();
+		bEquip = false;
+		if (Overlapped)
+		{
+			GetMesh()->SetOverlayMaterial(nullptr);
+		}
 	}
 }

@@ -103,14 +103,6 @@ void UCAction_Melee::MeleeOverlap(UPrimitiveComponent* OverlappedComp, const FHi
 	{
 		return;
 	}
-	//Check ActionComponent
-	UCActionComponent* ActionComp = Cast<UCActionComponent>(OtherActor->GetComponentByClass(UCActionComponent::StaticClass()));
-	if (ActionComp == nullptr)
-	{
-		return;
-	}
-	//Action Start
-	ActionComp->StartActionByName(OtherActor, "Hit");
 
 	//Check AttributeComponent and Apply Damage
 	UCAttributeComponent* AttributeComp = Cast<UCAttributeComponent>(OtherActor->GetComponentByClass(UCAttributeComponent::StaticClass()));
@@ -118,10 +110,7 @@ void UCAction_Melee::MeleeOverlap(UPrimitiveComponent* OverlappedComp, const FHi
 	{
 		return;
 	}
-	float realDamage = AttributeComp->DamageHealth(Damage, OtherActor);
-	UGameplayStatics::ApplyDamage(OtherActor, realDamage, OverlappedComp->GetOwner()->GetInstigatorController(), OverlappedComp->GetOwner(), UDamageType::StaticClass());
-	
-
+	AttributeComp->DamageHealth(Damage, OtherActor, GetOwner()->GetOwner());
 }
 
 void UCAction_Melee::NextCombo(AActor* Instigator)
