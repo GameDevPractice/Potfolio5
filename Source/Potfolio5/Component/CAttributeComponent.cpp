@@ -1,6 +1,8 @@
 #include "Component/CAttributeComponent.h"
 #include "Component/CActionComponent.h"
 #include "Engine/DamageEvents.h"
+#include "Character/CBoosReward.h"
+#include "Character/CPlayerController.h"
 
 UCAttributeComponent::UCAttributeComponent()
 {
@@ -36,6 +38,14 @@ float UCAttributeComponent::DamageHealth(float DamageAmount, AActor* DamagedActo
 		//Death logic
 		
 		ActionComp->StartActionByName(DamagedActor, "Death");
+		if (DamagedActor->ActorHasTag("Boss"))
+		{
+			ACPlayerController* PlayerController= Cast<ACPlayerController>(Instigator->GetInstigatorController());
+			if (PlayerController)
+			{
+				PlayerController->AddCharacter(DamagedActor);
+			}
+		}
 		return 0.f;
 	}
 	else

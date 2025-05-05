@@ -7,6 +7,7 @@
 class ACPlayer;
 class UUserWidget;
 class UNiagaraSystem;
+class UMyUserWidget;
 
 UCLASS()
 class POTFOLIO5_API ACPlayerController : public APlayerController
@@ -20,7 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintCallable)
-	TArray<ACPlayer*> GetPlayer() const { return Characters; }
+	TArray<AActor*> GetPlayer() const { return Characters; }
 
 	UFUNCTION(BlueprintCallable)
 	float GetRate() const { return ChangeTime; }
@@ -33,8 +34,9 @@ protected:
 protected:
 	virtual void SetupInputComponent();
 
+public:
 	UFUNCTION(BlueprintCallable)
-	void AddCharacter(ACPlayer* InCharacter);
+	void AddCharacter(AActor* InCharacter);
 
 private:
 	void ChangeCharacter1();
@@ -47,13 +49,13 @@ private:
 	void OnCanChange();
 
 protected:
-	TArray<AActor*> CharacterArray;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Character")
-	TArray<ACPlayer*> Characters;
+	TArray<AActor*> Characters;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 	TSubclassOf<UUserWidget> WidgetClass;
 	UUserWidget* Widget;
+	UMyUserWidget* ChagneWidget;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Particle")
 	UNiagaraSystem* ChangeEffect;
@@ -63,4 +65,5 @@ protected:
 	float ChangeTime;
 
 	int32 CharacterInt;
+
 };

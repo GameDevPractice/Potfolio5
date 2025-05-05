@@ -25,9 +25,14 @@ void ACPlayerController::BeginPlay()
 
 	if (Widget != nullptr)
 	{
-		Widget->AddToViewport();
+		ChagneWidget = Cast<UMyUserWidget>(Widget);
+		if (ChagneWidget == nullptr)
+		{
+			return;
+		}
+		ChagneWidget->AddToViewport();
+		ChagneWidget->SetVisibility(ESlateVisibility::Visible);
 	}
-
 }
 
 void ACPlayerController::ChangeCharacterAction(ACPlayer* InAction, int32 NewInt)
@@ -49,11 +54,9 @@ void ACPlayerController::ChangeCharacterAction(ACPlayer* InAction, int32 NewInt)
 	{
 		return;
 	}
-	if (UMyUserWidget* ChagneWidget = Cast<UMyUserWidget>(Widget))
-	{
-		ChagneWidget->ChangeCharacter(NewInt);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ChangeEffect, GetPawn()->GetActorLocation() - FVector(0.0f, 0.0f, 150.f));
-	}
+	
+	ChagneWidget->ChangeCharacter(NewInt);
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ChangeEffect, GetPawn()->GetActorLocation() - FVector(0.0f, 0.0f, 150.f));
 	
 }
 
@@ -66,9 +69,9 @@ void ACPlayerController::SetupInputComponent()
 	InputComponent->BindAction("Change3", EInputEvent::IE_Pressed, this, &ACPlayerController::ChangeCharacter3);
 }
 
-void ACPlayerController::AddCharacter(ACPlayer* InCharacter)
+void ACPlayerController::AddCharacter(AActor* InCharacter)
 {
-	Characters.Add(InCharacter);
+	ChagneWidget->AddCharacter(InCharacter);
 }
 
 void ACPlayerController::ChangeCharacter1()

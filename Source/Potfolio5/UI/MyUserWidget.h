@@ -12,4 +12,7 @@ class POTFOLIO5_API UMyUserWidget : public UUserWidget
 public:
 	UFUNCTION(BlueprintNativeEvent)
 	void ChangeCharacter(int32 NewInt);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void AddCharacter(AActor* InCharacter);
 };

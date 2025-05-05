@@ -62,6 +62,10 @@ public:
 	void SetEquip();
 	void SetUnEquip();
 
+	//Check Boos
+	UFUNCTION(BlueprintCallable, Category = "Attack")
+	FORCEINLINE bool IsBoos() const { return bBoos; }
+
 	FORCEINLINE UCapsuleComponent* GetCapsuleComponent() const { return Capsule; }
 	virtual void StopJumping();
 
@@ -112,6 +116,9 @@ protected:
 	bool Overlapped;
 	UMaterialInterface* OverlayMaterial;
 
+	bool bBoos;
+
+	//Delegate
 public:
 	UPROPERTY()
 	FOnBeginOverlap OnBeginOverlap;

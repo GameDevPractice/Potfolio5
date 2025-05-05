@@ -55,12 +55,17 @@ ACPlayer::ACPlayer()
 		 OverlayMaterial = MaterialAsset.Object;
 	 }
 	 Overlapped = false;
+	 bBoos = false;
 }
 
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	Capsule->OnComponentBeginOverlap.AddDynamic(this, &ACPlayer::OnOverlapBegin);
+	if (ActorHasTag("Boos"))
+	{
+		bBoos = true;
+	}
 }
 
 void ACPlayer::Tick(float DeltaTime)
