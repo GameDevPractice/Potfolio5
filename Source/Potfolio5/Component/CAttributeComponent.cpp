@@ -1,7 +1,6 @@
 #include "Component/CAttributeComponent.h"
 #include "Component/CActionComponent.h"
 #include "Engine/DamageEvents.h"
-#include "Character/CBoosReward.h"
 #include "Character/CPlayerController.h"
 
 UCAttributeComponent::UCAttributeComponent()
@@ -18,7 +17,7 @@ void UCAttributeComponent::BeginPlay()
 	
 }
 
-float UCAttributeComponent::DamageHealth(float DamageAmount, AActor* DamagedActor, AActor* Instigator)
+float UCAttributeComponent::DamageHealth(float DamageAmount, AActor* DamagedActor, AActor* Instigator, AController* InInstigatorController)
 {
 	UCActionComponent* ActionComp = Cast<UCActionComponent>(DamagedActor->GetComponentByClass(UCActionComponent::StaticClass()));
 	if (ActionComp == nullptr)
@@ -31,7 +30,7 @@ float UCAttributeComponent::DamageHealth(float DamageAmount, AActor* DamagedActo
 		return 0.f;
 	}
 	FDamageEvent DamageEvent;
-	float realDamage = DamagedActor->TakeDamage(DamageAmount, DamageEvent, Instigator->GetInstigatorController(), nullptr);
+	float realDamage = DamagedActor->TakeDamage(DamageAmount, DamageEvent, InInstigatorController, nullptr);
 	Health -= realDamage;
 	if (Health <= 0.f)
 	{
@@ -40,7 +39,7 @@ float UCAttributeComponent::DamageHealth(float DamageAmount, AActor* DamagedActo
 		ActionComp->StartActionByName(DamagedActor, "Death");
 		if (DamagedActor->ActorHasTag("Boss"))
 		{
-			ACPlayerController* PlayerController= Cast<ACPlayerController>(Instigator->GetInstigatorController());
+			ACPlayerController* PlayerController= Cast<ACPlayerController>(InInstigatorController);
 			if (PlayerController)
 			{
 				PlayerController->AddCharacter(DamagedActor);

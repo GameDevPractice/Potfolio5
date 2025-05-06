@@ -56,11 +56,15 @@ public:
 	void Jump();
 
 	//Equip,UnEquip
+	UFUNCTION(BlueprintCallable)
 	void PlayEquip();
+	UFUNCTION(BlueprintCallable)
 	void PlayUnEquip();
 	void StartMovement();
 	void SetEquip();
 	void SetUnEquip();
+
+	bool IsEquip() { return bEquip; }
 
 	//Check Boos
 	UFUNCTION(BlueprintCallable, Category = "Attack")
@@ -107,7 +111,6 @@ protected:
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Character")
 	UTexture2D* Image;
-
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	bool bEquip;

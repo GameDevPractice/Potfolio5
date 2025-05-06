@@ -47,7 +47,8 @@ void ACPlayerController::ChangeCharacterAction(ACPlayer* InAction, int32 NewInt)
 	FRotator Rotation = Characters[NewInt]->GetActorRotation();
 	Characters[NewInt]->SetActorLocation(GetPawn()->GetActorLocation());
 	Characters[NewInt]->SetActorRotation(GetPawn()->GetActorRotation());
-	Possess(Cast<ACPlayer>(Characters[NewInt]));
+	
+	OnPossess(Cast<ACPlayer>(Characters[NewInt]));
 	InAction->SetActorLocation(Location);
 	InAction->SetActorRotation(Rotation);
 	if (ChangeEffect == nullptr)

@@ -82,7 +82,7 @@ void UCAction_Melee::StopAction_Implementation(AActor* Instigator)
 void UCAction_Melee::PlayUnEquip(AActor* Instigator)
 {
 	ACPlayer* Player = Cast<ACPlayer>(Instigator);
-	if (Player != nullptr)
+	if (Player != nullptr && Player->IsEquip())
 	{
 		if (!bIsRunning)
 		{
@@ -110,7 +110,7 @@ void UCAction_Melee::MeleeOverlap(UPrimitiveComponent* OverlappedComp, const FHi
 	{
 		return;
 	}
-	AttributeComp->DamageHealth(Damage, OtherActor, GetOwner()->GetOwner());
+	AttributeComp->DamageHealth(Damage, OtherActor, GetOwner()->GetOwner(), GetOwner()->GetOwner()->GetInstigatorController());
 }
 
 void UCAction_Melee::NextCombo(AActor* Instigator)
