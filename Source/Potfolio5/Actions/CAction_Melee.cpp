@@ -52,8 +52,8 @@ void UCAction_Melee::StartAction_Implementation(AActor* Instigator)
 		bIsRunning = true;
 		if (Player != nullptr)
 		{
+			Player->SetActorRotation(FRotator(0, Player->GetControlRotation().Yaw, 0));
 			Player->PlayEquip();
-			
 		}
 	}
 }
@@ -126,6 +126,7 @@ void UCAction_Melee::NextCombo(AActor* Instigator)
 	ACharacter* Character = Cast<ACharacter>(Instigator);
 	if (IsValid(ActionMontages[ActionVaule]))
 	{
+		Character->SetActorRotation(FRotator(0, Character->GetControlRotation().Yaw, 0));
 		Character->PlayAnimMontage(ActionMontages[ActionVaule]);
 	}
 	return;

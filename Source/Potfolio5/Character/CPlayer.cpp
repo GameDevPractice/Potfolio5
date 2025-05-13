@@ -205,6 +205,7 @@ void ACPlayer::PlayEquip()
 	{
 	GetMesh()->SetOverlayMaterial(OverlayMaterial);
 	}
+	bEquip = true;
 }
 
 void ACPlayer::PlayUnEquip()
