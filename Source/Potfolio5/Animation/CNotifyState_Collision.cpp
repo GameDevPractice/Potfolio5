@@ -1,5 +1,6 @@
 #include "Animation/CNotifyState_Collision.h"
 #include "Character/CPlayer.h"
+#include "Character/CEnemy.h"
 #include "GameFramework/Character.h"
 #include "Components/CapsuleComponent.h"
 
@@ -17,18 +18,32 @@ void UCNotifyState_Collision::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 		return;
 	}
 	ACPlayer* Player = Cast<ACPlayer>(Owner);
-	if (Player == nullptr)
+	if (Player != nullptr)
 	{
+		UCapsuleComponent* CapsuleComponent = Player->GetCapsuleComponent();
+		if (CapsuleComponent == nullptr)
+		{
+			return;
+		}
+		CapsuleComponent->AttachToComponent(MeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, SocketName);
+		CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		CapsuleComponent->SetRelativeTransform(Transform);
 		return;
 	}
-	UCapsuleComponent* CapsuleComponent = Player->GetCapsuleComponent();
-	if (CapsuleComponent == nullptr)
+	ACEnemy* Enemy = Cast<ACEnemy>(Owner);
+	if (Enemy != nullptr)
 	{
+		UCapsuleComponent* CapsuleComponent = Enemy->GetCapsuleComponent();
+		if (CapsuleComponent == nullptr)
+		{
+			return;
+		}
+		CapsuleComponent->AttachToComponent(MeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, SocketName);
+		CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		CapsuleComponent->SetRelativeTransform(Transform);
 		return;
 	}
-	CapsuleComponent->AttachToComponent(MeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, SocketName);
-	CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	CapsuleComponent->SetRelativeTransform(Transform);
+	
 
 }
 
@@ -41,15 +56,26 @@ void UCNotifyState_Collision::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimS
 		return;
 	}
 	ACPlayer* Player = Cast<ACPlayer>(Owner);
-	if (Player == nullptr)
+	if (Player != nullptr)
 	{
+		UCapsuleComponent* CapsuleComponent = Player->GetCapsuleComponent();
+		if (CapsuleComponent == nullptr)
+		{
+			return;
+		}
+		CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		return;
 	}
-	UCapsuleComponent* CapsuleComponent = Player->GetCapsuleComponent();
-	if (CapsuleComponent == nullptr)
+	ACEnemy* Enemy = Cast<ACEnemy>(Owner);
+	if (Enemy != nullptr)
 	{
+		UCapsuleComponent* CapsuleComponent = Enemy->GetCapsuleComponent();
+		if (CapsuleComponent == nullptr)
+		{
+			return;
+		}
+		CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		return;
 	}
-	CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	
 }

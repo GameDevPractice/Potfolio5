@@ -19,14 +19,16 @@ EBTNodeResult::Type UCBTTaskAttack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	APawn* Panwn = AIC->GetPawn();
 	if (Panwn == nullptr)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Pawn is nullptr in UCBTTaskAttack::ExecuteTask"));
 		return EBTNodeResult::Failed;
 	}
 	UCActionComponent* ActionComp = Cast<UCActionComponent>(Panwn->GetComponentByClass(UCActionComponent::StaticClass()));
 	if (ActionComp == nullptr)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ActionComp is nullptr in UCBTTaskAttack::ExecuteTask"));
 		return EBTNodeResult::Failed;
 	}
-	if (ActionComp->StartActionByName(Panwn, "Attack"))
+	if (ActionComp->StartActionByName(Panwn, "First"))
 	{
 		return EBTNodeResult::Succeeded;
 	}

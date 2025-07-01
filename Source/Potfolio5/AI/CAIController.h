@@ -39,8 +39,8 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly)
 	UCBehaviorComponent* BehaviorComp;
 
-	UPROPERTY(VisibleDefaultsOnly)
-		UBlackboardComponent* BlackboardComp;
+	UPROPERTY(Transient)
+	UBlackboardComponent* BlackboardComp;
 private:
 	UPROPERTY(EditAnywhere)
 	float BehaviorRange;

@@ -30,6 +30,7 @@ public:
 
 public:
 	FORCEINLINE UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
+	FORCEINLINE UCapsuleComponent* GetCapsuleComponent() const { return Capsule; }
 
 
 protected:
@@ -38,6 +39,9 @@ protected:
 
 protected:
 	USkeletalMesh* Mesh;
+
+	UPROPERTY( BlueprintReadOnly, EditDefaultsOnly)
+	UCapsuleComponent* Capsule;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	UCActionComponent* ActionComp;

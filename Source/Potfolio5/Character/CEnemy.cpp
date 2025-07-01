@@ -3,6 +3,7 @@
 #include "Component/CAttributeComponent.h"
 #include "Component/CMontageComponent.h"
 #include "AI/CAIController.h"
+#include "Components/CapsuleComponent.h"
 
 ACEnemy::ACEnemy()
 {
@@ -10,6 +11,9 @@ ACEnemy::ACEnemy()
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
+	//AttackCollision
+	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("AttackCollision"));
+	Capsule->SetupAttachment(GetMesh());
 
 	ActionComp = CreateDefaultSubobject<UCActionComponent>(TEXT("ActionComp"));
 	AttributeComp = CreateDefaultSubobject<UCAttributeComponent>(TEXT("AttributeComp"));
@@ -25,6 +29,8 @@ void ACEnemy::BeginPlay()
 	}
 	
 	AIC = GetController<ACAIController>();
+
+	Capsule->OnComponentBeginOverlap.AddDynamic(this, &ACEnemy::OnOverlapBegin);
 
 }
 

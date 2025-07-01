@@ -10,8 +10,6 @@
 
 ACAIController::ACAIController()
 {
-	PrimaryActorTick.bCanEverTick = true;
-
 	BehaviorRange = 1000.f;
 	PerceptionComp = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("PerceptionComp"));
 	BehaviorComp = CreateDefaultSubobject<UCBehaviorComponent>(TEXT("BehaviorComp"));
@@ -32,12 +30,13 @@ ACAIController::ACAIController()
 void ACAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	BlackboardComp = Blackboard;
 	OwnerEnemy = Cast<ACEnemy>(InPawn);
 	ensure(OwnerEnemy->GetBehaviorTree());
 	UseBlackboard(OwnerEnemy->GetBehaviorTree()->BlackboardAsset, BlackboardComp);
-	ensure(BlackboardComp);
-	BehaviorComp->SetBlackBoard(BlackboardComp);
+	if (BehaviorComp != nullptr)
+	{
+		BehaviorComp->SetBlackBoard(BlackboardComp);
+	}
 	RunBehaviorTree(OwnerEnemy->GetBehaviorTree());
 
 	PerceptionComp->OnPerceptionUpdated.AddDynamic(this, &ACAIController::OnPerceptionUpdated);

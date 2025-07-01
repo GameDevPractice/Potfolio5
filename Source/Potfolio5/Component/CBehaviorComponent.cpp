@@ -13,10 +13,7 @@ void UCBehaviorComponent::BeginPlay()
 
 void UCBehaviorComponent::SetBlackBoard(UBlackboardComponent* InBlackBoardComp)
 {
-	if (InBlackBoardComp == nullptr)
-	{
-		return;
-	}
+
 	BlackboardComp = InBlackBoardComp;
 }
 

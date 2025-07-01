@@ -3,6 +3,7 @@
 #include "Component/CActionComponent.h"
 #include "Component/CAttributeComponent.h"
 #include "Character/CPlayer.h"
+#include "Character/CEnemy.h"
 #include "Kismet/GameplayStatics.h"
 
 UCAction_Melee::UCAction_Melee()
@@ -22,9 +23,14 @@ void UCAction_Melee::StartAction_Implementation(AActor* Instigator)
 
 	ACPlayer* Player = Cast<ACPlayer>(Instigator);
 	//Check Binded and Bind
-	if (!Player->OnBeginOverlap.IsBound())
+	if (Player != nullptr && !Player->OnBeginOverlap.IsBound())
 	{
 	Player->OnBeginOverlap.AddDynamic(this, &UCAction_Melee::MeleeOverlap);
+	}
+	ACEnemy* Enemy = Cast<ACEnemy>(Instigator);
+	if (Enemy != nullptr && !Enemy->OnBeginOverlap.IsBound())
+	{
+		Enemy->OnBeginOverlap.AddDynamic(this, &UCAction_Melee::MeleeOverlap);
 	}
 	ACharacter* Character = Cast<ACharacter>(Instigator);
 	FTimerDelegate StopDelegate = FTimerDelegate::CreateUObject(this, &UCAction_Melee::StopAction_Implementation, Instigator);
@@ -75,7 +81,17 @@ void UCAction_Melee::StopAction_Implementation(AActor* Instigator)
 		GetWorld(Instigator)->GetTimerManager().SetTimer(AuraTimer, UnEquipDelegate, 10.0f, false);
 	}
 	ACPlayer* Player = Cast<ACPlayer>(Instigator);
+	if (Player != nullptr)
+	{
 	Player->OnBeginOverlap.Clear();
+	}
+
+	ACEnemy* Enemy = Cast<ACEnemy>(Instigator);
+	if (Enemy != nullptr)
+	{
+		Enemy->OnBeginOverlap.Clear();
+	}
+
 	
 }
 
