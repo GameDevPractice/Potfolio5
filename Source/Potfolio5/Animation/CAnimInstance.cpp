@@ -1,5 +1,5 @@
 #include "CAnimInstance.h"
-#include "Character/CPlayer.h"
+#include "GameFramework/Character.h"
 
 
 
@@ -15,12 +15,15 @@ void UCAnimInstance::NativeBeginPlay()
 void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
-	player = Cast<ACPlayer>(TryGetPawnOwner());
-	if (player)
+	ACharacter* Character = Cast<ACharacter>(TryGetPawnOwner());
+	if (Character == nullptr)
 	{
-		Speed = player->GetVelocity().Size2D();
-		Direction = CalculateDirection(player->GetVelocity(), player->GetActorRotation());
-		Hight = player->GetVelocity().Z;
+		return;
 	}
+	
+		Speed = Character->GetVelocity().Size2D();
+		Direction = CalculateDirection(Character->GetVelocity(), Character->GetActorRotation());
+		Hight = Character->GetVelocity().Z;
+	
 
 }

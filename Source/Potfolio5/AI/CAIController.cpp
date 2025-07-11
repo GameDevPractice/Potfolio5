@@ -13,6 +13,7 @@ ACAIController::ACAIController()
 	BehaviorRange = 1000.f;
 	PerceptionComp = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("PerceptionComp"));
 	BehaviorComp = CreateDefaultSubobject<UCBehaviorComponent>(TEXT("BehaviorComp"));
+	Blackboard = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComp"));
 	Sight = CreateDefaultSubobject<UAISenseConfig_Sight>("Sight");
 
 	Sight->SightRadius = 2000.f;
@@ -25,17 +26,19 @@ ACAIController::ACAIController()
 
 	PerceptionComp->ConfigureSense(*Sight);
 	PerceptionComp->SetDominantSense(Sight->GetSenseImplementation());
+	
 }
 
 void ACAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	OwnerEnemy = Cast<ACEnemy>(InPawn);
-	ensure(OwnerEnemy->GetBehaviorTree());
+	UBlackboardComponent* BlackboardComp = Blackboard.Get();
 	UseBlackboard(OwnerEnemy->GetBehaviorTree()->BlackboardAsset, BlackboardComp);
 	if (BehaviorComp != nullptr)
 	{
-		BehaviorComp->SetBlackBoard(BlackboardComp);
+		this->Blackboard = BlackboardComp;
+		BehaviorComp->SetBlackBoard(Blackboard);
 	}
 	RunBehaviorTree(OwnerEnemy->GetBehaviorTree());
 
@@ -67,7 +70,7 @@ void ACAIController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 		}
 	}
 	
-	BlackboardComp->SetValueAsObject("Playerkey", Player);
+	Blackboard->SetValueAsObject("Playerkey", Player);
 }
 
 float ACAIController::GetSightRadius()

@@ -5,11 +5,12 @@
 #include "CBehaviorComponent.generated.h"
 
 class UBlackboardComponent;
+class ACPlayer;
 
 UENUM(BlueprintType)
 enum class EBehaviorType : uint8
 {
-	Hit,Wait,Attack,Move,Max
+	Hit,Wait,Attack,Move,Approch,Max
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -29,11 +30,20 @@ public:
 public:
 	void SetBlackBoard(UBlackboardComponent* InBlackBoardComp);
 
+	ACPlayer* GetPlayer();
+
 public:
+	UFUNCTION(BlueprintCallable)
 	void SetHitMode();
+	UFUNCTION(BlueprintCallable)
 	void SetWaitMode();
+	UFUNCTION(BlueprintCallable)
 	void SetAttackMode();
+	UFUNCTION(BlueprintCallable)
 	void SetMoveMode();
+
+	UFUNCTION(BlueprintCallable)
+	void SetApprochMode();
 
 private:
 	void SetBehaviorType(EBehaviorType Type);
@@ -43,5 +53,10 @@ private:
 
 private:
 	UBlackboardComponent* BlackboardComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Blackboard")
+	FName PlayerKey ;
+	UPROPERTY(EditDefaultsOnly, Category = "Blackboard")
+	FName BehaviorTypeKey;
 		
 };

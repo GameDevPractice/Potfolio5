@@ -1,8 +1,11 @@
 #include "Component/CBehaviorComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "Character/CPlayer.h"
 
 UCBehaviorComponent::UCBehaviorComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PlayerKey = "Playerkey";
+	BehaviorTypeKey = "BehaviorKey";
 }
 
 
@@ -13,16 +16,18 @@ void UCBehaviorComponent::BeginPlay()
 
 void UCBehaviorComponent::SetBlackBoard(UBlackboardComponent* InBlackBoardComp)
 {
-
 	BlackboardComp = InBlackBoardComp;
+}
+
+ACPlayer* UCBehaviorComponent::GetPlayer()
+{
+	return Cast<ACPlayer>(BlackboardComp->GetValueAsObject(PlayerKey));
 }
 
 void UCBehaviorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
-
-
 
 void UCBehaviorComponent::SetHitMode()
 {
@@ -44,11 +49,13 @@ void UCBehaviorComponent::SetMoveMode()
 	SetBehaviorType(EBehaviorType::Move);
 }
 
+void UCBehaviorComponent::SetApprochMode()
+{
+	SetBehaviorType(EBehaviorType::Approch);
+}
+
 void UCBehaviorComponent::SetBehaviorType(EBehaviorType Type)
 {
-	if (BehaviorType != Type)
-	{
-		BehaviorType = Type;
-	}
+	BlackboardComp->SetValueAsEnum(BehaviorTypeKey, (uint8)Type);
 }
 
