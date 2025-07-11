@@ -10,7 +10,7 @@ class ACPlayer;
 UENUM(BlueprintType)
 enum class EBehaviorType : uint8
 {
-	Hit,Wait,Attack,Move,Approch,Max
+	Hit,Wait,Attack,Move,Approch,Dead,Max
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -44,6 +44,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetApprochMode();
+	UFUNCTION(BlueprintCallable)
+	void SetDeadMode();
 
 private:
 	void SetBehaviorType(EBehaviorType Type);

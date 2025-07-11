@@ -54,6 +54,11 @@ void UCBehaviorComponent::SetApprochMode()
 	SetBehaviorType(EBehaviorType::Approch);
 }
 
+void UCBehaviorComponent::SetDeadMode()
+{
+	SetBehaviorType(EBehaviorType::Dead);
+}
+
 void UCBehaviorComponent::SetBehaviorType(EBehaviorType Type)
 {
 	BlackboardComp->SetValueAsEnum(BehaviorTypeKey, (uint8)Type);

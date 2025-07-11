@@ -1,7 +1,9 @@
 #include "AI/CBTService_AI.h"
 #include "AI/CAIController.h"
 #include "Component/CBehaviorComponent.h"
+#include "Component/CAttributeComponent.h"
 #include "Character/CPlayer.h"
+#include "Character/CEnemy.h"
 
 
 UCBTService_AI::UCBTService_AI()
@@ -15,9 +17,21 @@ void UCBTService_AI::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemo
 	ACAIController* AIC = Cast<ACAIController>(OwnerComp.GetAIOwner());
 	FRotator PawnRot = AIC->GetPawn()->GetActorRotation();
 	AIC->SetControlRotation(PawnRot);
+
+	ACEnemy* Enemy = Cast<ACEnemy>(AIC->GetPawn());
 	if (AIC == nullptr)
 	{
 		
+		return;
+	}
+	UCAttributeComponent* AttributeComp = Cast<UCAttributeComponent>(Enemy->GetComponentByClass(UCAttributeComponent::StaticClass()));
+	if (AttributeComp == nullptr)
+	{
+		return;
+	}
+	if (AttributeComp->GetHealth() <= 0.f)
+	{
+		AIC->GetBehaviorComp()->SetDeadMode();
 		return;
 	}
 	UCBehaviorComponent* BehaviorComp = AIC->GetBehaviorComp();
@@ -34,7 +48,7 @@ void UCBTService_AI::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemo
 	}
 	else
 	{
-		float Distance = AIC->GetPawn()->GetDistanceTo(Player);
+		float Distance = Enemy->GetDistanceTo(Player);
 
 		if (Distance > AIC->GetBehaviorRange())
 		{
