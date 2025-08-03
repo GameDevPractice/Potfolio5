@@ -208,13 +208,7 @@ void ACPlayer::PlayUnEquip()
 {
 	if (bEquip)
 	{
-		MontageComp->PlayunEquip();
-		bEquip = false;
-		GetCharacterMovement()->SetActive(false);
-		if (Overlapped)
-		{
 			GetMesh()->SetOverlayMaterial(nullptr);
 			GetCharacterMovement()->SetActive(true);
-		}
 	}
 }
