@@ -91,7 +91,7 @@ protected:
 	UCameraComponent* Camera;
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	USpringArmComponent* SpringArm;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UCapsuleComponent* Capsule;
 
 

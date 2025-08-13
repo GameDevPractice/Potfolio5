@@ -25,9 +25,9 @@ void UCNotifyState_Collision::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 		{
 			return;
 		}
-		CapsuleComponent->AttachToComponent(MeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, SocketName);
+		
 		CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		CapsuleComponent->SetRelativeTransform(Transform);
+		
 		return;
 	}
 	ACEnemy* Enemy = Cast<ACEnemy>(Owner);
@@ -38,9 +38,7 @@ void UCNotifyState_Collision::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 		{
 			return;
 		}
-		CapsuleComponent->AttachToComponent(MeshComp, FAttachmentTransformRules::SnapToTargetIncludingScale, SocketName);
 		CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		CapsuleComponent->SetRelativeTransform(Transform);
 		return;
 	}
 	

@@ -10,6 +10,7 @@ class POTFOLIO5_API UCNotifyState_Collision : public UAnimNotifyState
 	GENERATED_BODY()
 
 public:
+
 	FString GetNotifyName() const;
 
 	void NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference);
