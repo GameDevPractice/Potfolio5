@@ -25,7 +25,10 @@ void UCNotifyState_Collision::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 		{
 			return;
 		}
-		
+		if (SocketName.IsValid())
+		{
+		CapsuleComponent->AttachToComponent(MeshComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketName);
+		}
 		CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		
 		return;
