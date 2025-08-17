@@ -42,4 +42,7 @@ protected:
 
 	FTimerHandle StopTimer;
 	FTimerHandle AuraTimer;
+
+private:
+	TArray<AActor*> HitActors;
 };

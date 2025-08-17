@@ -13,6 +13,12 @@ enum class EBehaviorType : uint8
 	Hit,Wait,Attack,Move,Approch,Dead,Max
 };
 
+UENUM(BlueprintType)
+enum class EAttackType : uint8
+{
+	Nomal, Heavy, Special, Max
+};
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class POTFOLIO5_API UCBehaviorComponent : public UActorComponent
 {
@@ -43,12 +49,26 @@ public:
 	void SetMoveMode();
 
 	UFUNCTION(BlueprintCallable)
+	void SetNomalMode();
+	UFUNCTION(BlueprintCallable)
+	void SetHeavyMode();
+	UFUNCTION(BlueprintCallable)
+	void SetSpecialMode();
+
+	UFUNCTION(BlueprintCallable)
 	void SetApprochMode();
 	UFUNCTION(BlueprintCallable)
 	void SetDeadMode();
 
+	UFUNCTION(BlueprintCallable)
+	void SetOnAttackMode();
+	UFUNCTION(BlueprintCallable)
+	void SetOffAttackMode();
+
 private:
 	void SetBehaviorType(EBehaviorType Type);
+	void SetAttackType(EAttackType Type);
+	void SetAttackingType(bool bAttack);
 
 private:
 	EBehaviorType BehaviorType;
@@ -60,5 +80,9 @@ private:
 	FName PlayerKey ;
 	UPROPERTY(EditDefaultsOnly, Category = "Blackboard")
 	FName BehaviorTypeKey;
+	UPROPERTY(EditDefaultsOnly, Category = "Blackboard")
+	FName AttackTypeKey;
+	UPROPERTY(EditDefaultsOnly, Category = "Blackboard")
+	FName AttackingKey;
 		
 };

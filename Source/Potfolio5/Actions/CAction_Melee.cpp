@@ -5,6 +5,8 @@
 #include "Character/CPlayer.h"
 #include "Character/CEnemy.h"
 #include "Kismet/GameplayStatics.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "AI/CAIController.h"
 
 UCAction_Melee::UCAction_Melee()
 {
@@ -90,9 +92,16 @@ void UCAction_Melee::StopAction_Implementation(AActor* Instigator)
 	if (Enemy != nullptr)
 	{
 		Enemy->OnBeginOverlap.Clear();
+		ACAIController* AIController = Cast<ACAIController>(Enemy->GetController());
+		if (AIController != nullptr)
+		{
+			AIController->GetBlackboardComponent()->SetValueAsBool("AttackingKey", false);
+			
+		}
 	}
-
 	
+	
+	HitActors.Empty();
 }
 
 void UCAction_Melee::PlayUnEquip(AActor* Instigator)
@@ -120,6 +129,14 @@ void UCAction_Melee::MeleeOverlap(UPrimitiveComponent* OverlappedComp, const FHi
 		return;
 	}
 
+	//다단히트 방지
+	int32 Index = HitActors.Num();
+	HitActors.AddUnique(OtherActor);
+	if (Index >= HitActors.Num())
+	{
+		return;
+	}
+
 	//Check AttributeComponent and Apply Damage
 	UCAttributeComponent* AttributeComp = Cast<UCAttributeComponent>(OtherActor->GetComponentByClass(UCAttributeComponent::StaticClass()));
 	if (AttributeComp == nullptr)
@@ -136,6 +153,7 @@ void UCAction_Melee::NextCombo(AActor* Instigator)
 		return;
 	}
 	bSuccess = false;
+	HitActors.Empty();
 	GetWorld(Instigator)->GetTimerManager().ClearTimer(StopTimer);
 	ActionVaule++;
 	ActionVaule = FMath::Clamp(ActionVaule, 0, ActionMontages.Num() - 1);
@@ -145,6 +163,7 @@ void UCAction_Melee::NextCombo(AActor* Instigator)
 		Character->SetActorRotation(FRotator(0, Character->GetControlRotation().Yaw, 0));
 		Character->PlayAnimMontage(ActionMontages[ActionVaule]);
 	}
+	
 	return;
 }
 

@@ -28,8 +28,9 @@ EBTNodeResult::Type UCBTTaskAttack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ActionComp is nullptr in UCBTTaskAttack::ExecuteTask"));
 		return EBTNodeResult::Failed;
 	}
-	if (ActionComp->StartActionByName(Panwn, "First"))
+	if (ActionComp->StartActionByName(Panwn, AttackName))
 	{
+		
 		return EBTNodeResult::Succeeded;
 	}
 	return EBTNodeResult::Failed;

@@ -79,6 +79,8 @@ protected:
 protected:
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	
 protected:
 	UFUNCTION(BlueprintCallable)
 	UTexture2D* GetImage() const { return Image; }
@@ -123,6 +125,7 @@ protected:
 public:
 	UPROPERTY()
 	FOnBeginOverlap OnBeginOverlap;
+
 
 
 };

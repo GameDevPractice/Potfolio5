@@ -37,14 +37,6 @@ float UCAttributeComponent::DamageHealth(float DamageAmount, AActor* DamagedActo
 		//Death logic
 		
 		ActionComp->StartActionByName(DamagedActor, "Death");
-		if (DamagedActor->ActorHasTag("Boss"))
-		{
-			ACPlayerController* PlayerController= Cast<ACPlayerController>(InInstigatorController);
-			if (PlayerController)
-			{
-				PlayerController->AddCharacter(DamagedActor);
-			}
-		}
 		return 0.f;
 	}
 	else
