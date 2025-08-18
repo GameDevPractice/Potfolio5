@@ -24,7 +24,6 @@ void UCBTService_Attack::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
 
 	if (AIC->GetBlackboardComponent()->GetValueAsBool("AttackingKey"))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Green, TEXT("Attacking"));
 		return;
 	}
 
