@@ -24,6 +24,16 @@ void UCMontageComponent::PlayHit()
 	PlayMontage(HitMontage);
 }
 
+void UCMontageComponent::PlayHitReact()
+{
+	PlayMontage(HitReactMontage);
+}
+
+void UCMontageComponent::PlayGetOn()
+{
+	PlayMontage(GetOnMontage);
+}
+
 void UCMontageComponent::PlayMontage(UAnimMontage* Montage)
 {
 	if (Montage == nullptr)

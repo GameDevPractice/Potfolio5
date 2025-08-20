@@ -34,7 +34,7 @@ void UCBTService_Attack::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
 		BehaviorComp->SetNomalMode();
 		
 	}
-	else if ( 0.7f < RandomValue &&RandomValue < 0.9f)
+	else if ( 0.7f <= RandomValue &&RandomValue < 0.9f)
 	{
 		BehaviorComp->SetHeavyMode();
 	}

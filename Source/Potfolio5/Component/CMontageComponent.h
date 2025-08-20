@@ -21,6 +21,18 @@ public:
 	void PlayunEquip();
 	UFUNCTION(BlueprintCallable)
 	void PlayHit();
+	UFUNCTION(BlueprintCallable)
+	void PlayHitReact();
+	UFUNCTION(BlueprintCallable)
+	void PlayGetOn();
+
+
+	UFUNCTION(BlueprintCallable)
+	float GetHitRate() { return HitMontage->RateScale; }
+	UFUNCTION(BlueprintCallable)
+	float GetHitReactRate() { return HitReactMontage->RateScale; }
+	UFUNCTION(BlueprintCallable)
+	float GetGetOntRate() { return GetOnMontage->RateScale; }
 
 private:
 	void PlayMontage(UAnimMontage* Montage);
@@ -31,5 +43,11 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	UAnimMontage* HitMontage;
+
+	UPROPERTY(EditDefaultsOnly)
+	UAnimMontage* HitReactMontage;
+
+	UPROPERTY(EditDefaultsOnly)
+	UAnimMontage* GetOnMontage;
 		
 };
