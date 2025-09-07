@@ -57,7 +57,7 @@ void ACPlayerController::ChangeCharacterAction(ACPlayer* InAction, int32 NewInt)
 	}
 	
 	ChagneWidget->ChangeCharacter(NewInt);
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ChangeEffect, GetPawn()->GetActorLocation() - FVector(0.0f, 0.0f, 150.f));
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ChangeEffect, GetPawn()->GetActorLocation() );
 	
 }
 
