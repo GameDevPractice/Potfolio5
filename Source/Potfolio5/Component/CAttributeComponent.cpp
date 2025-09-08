@@ -44,6 +44,7 @@ float UCAttributeComponent::DamageHealth(float DamageAmount, AActor* DamagedActo
 	{
 		//Action Start -> Attacker is Instigator
 		ActionComp->StartActionByName(Instigator, "Hit");
+		ActionComp->StopActionByName(Instigator, "Hit");
 	}
 	return realDamage;
 }

@@ -62,7 +62,7 @@ void ACPlayerController::ChangeCharacterAction(ACPlayer* InAction, int32 NewInt)
 	{
 		return;
 	}
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ChangeEffect, GetPawn()->GetActorLocation() );
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ChangeEffect, GetPawn()->GetActorLocation() - FVector(0.0f,0.0f,80.f) );
 	
 }
 
