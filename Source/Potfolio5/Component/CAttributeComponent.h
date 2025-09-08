@@ -23,10 +23,15 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetHealth() const { return Health; }
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetMaxHealth() const { return MaxHealth; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Attribute")
 	float Health;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Attribute")
+	float MaxHealth;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Attribute")
 	float Stamina;

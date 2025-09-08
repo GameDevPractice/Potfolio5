@@ -27,6 +27,7 @@ void UCNotifyState_Collision::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 		}
 		if (SocketName.IsValid())
 		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Socket Name : %s"), *SocketName.ToString()));
 		CapsuleComponent->AttachToComponent(MeshComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketName);
 		}
 		CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);

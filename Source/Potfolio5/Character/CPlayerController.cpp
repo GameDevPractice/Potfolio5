@@ -4,7 +4,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
 #include "NiagaraFunctionLibrary.h"
-#include "UI/MyUserWidget.h"
+#include "UI/WB_Player_Change.h"
 #include "Component/CActionComponent.h"
 
 
@@ -25,7 +25,7 @@ void ACPlayerController::BeginPlay()
 
 	if (Widget != nullptr)
 	{
-		ChagneWidget = Cast<UMyUserWidget>(Widget);
+		ChagneWidget = Cast<UWB_Player_Change>(Widget);
 		if (ChagneWidget == nullptr)
 		{
 			return;
@@ -47,16 +47,21 @@ void ACPlayerController::ChangeCharacterAction(ACPlayer* InAction, int32 NewInt)
 	FRotator Rotation = Characters[NewInt]->GetActorRotation();
 	Characters[NewInt]->SetActorLocation(GetPawn()->GetActorLocation());
 	Characters[NewInt]->SetActorRotation(GetPawn()->GetActorRotation());
+
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	GetPlayerViewPoint(CameraLocation, CameraRotation);
 	
 	OnPossess(Cast<ACPlayer>(Characters[NewInt]));
 	InAction->SetActorLocation(Location);
 	InAction->SetActorRotation(Rotation);
+	// 회전 복원
+	SetControlRotation(CameraRotation);
+	ChagneWidget->ChangeCharacter(NewInt);
 	if (ChangeEffect == nullptr)
 	{
 		return;
 	}
-	
-	ChagneWidget->ChangeCharacter(NewInt);
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ChangeEffect, GetPawn()->GetActorLocation() );
 	
 }

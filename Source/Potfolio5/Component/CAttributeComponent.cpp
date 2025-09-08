@@ -5,7 +5,8 @@
 
 UCAttributeComponent::UCAttributeComponent()
 {
-	Health = 100.f;
+	MaxHealth = 100.f;
+	Health = MaxHealth;
 	Stamina = 100.f;
 }
 

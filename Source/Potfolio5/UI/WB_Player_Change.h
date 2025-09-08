@@ -2,10 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "MyUserWidget.generated.h"
+#include "WB_Player_Change.generated.h"
 
 UCLASS()
-class POTFOLIO5_API UMyUserWidget : public UUserWidget
+class POTFOLIO5_API UWB_Player_Change : public UUserWidget
 {
 	GENERATED_BODY()
 
