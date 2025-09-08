@@ -35,6 +35,15 @@ void ACEnemy::BeginPlay()
 
 }
 
+bool ACEnemy::IsOwnHp_Implementation()
+{
+	return false;
+}
+
+void ACEnemy::SetVisibilityHp_Implementation(bool Visible)
+{
+}
+
 void ACEnemy::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor == this)

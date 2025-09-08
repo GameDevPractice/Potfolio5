@@ -32,6 +32,11 @@ public:
 	FORCEINLINE UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
 	FORCEINLINE UCapsuleComponent* GetCapsuleComponent() const { return Capsule; }
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool IsOwnHp();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetVisibilityHp(bool Visible);
 
 protected:
 	UFUNCTION()
