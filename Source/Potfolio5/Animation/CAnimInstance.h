@@ -25,4 +25,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	float Hight;
 	ACPlayer* player;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	bool bOrient;
 };

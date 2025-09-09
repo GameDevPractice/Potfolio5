@@ -30,6 +30,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UWorld* GetWorld(AActor* Actor);
 
+
+
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Action")
 	UCActionComponent* GetOwner() const;

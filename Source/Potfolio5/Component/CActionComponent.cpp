@@ -68,6 +68,21 @@ bool UCActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
 	return false;
 }
 
+UCAction* UCActionComponent::GetActionByClass(TSubclassOf<UCAction> FindAction)
+{
+	if (!FindAction) return nullptr; // 입력값 체크
+
+	for (UCAction* Action : Actions)
+	{
+		if (Action && Action->IsA(FindAction))
+		{
+			return Action;
+		}
+	}
+
+	return nullptr; // 없으면 nullptr 반환
+}
+
 
 
 

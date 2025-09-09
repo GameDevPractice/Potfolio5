@@ -30,6 +30,9 @@ protected:
 	int32 GetInt() const { return CharacterInt; }
 
 	UFUNCTION(BlueprintCallable)
+	void OrientOn(bool bLock);
+
+	UFUNCTION(BlueprintCallable)
 	void ChangeCharacterAction(ACPlayer* InAction, int32 NewInt);
 protected:
 	virtual void SetupInputComponent();
@@ -37,6 +40,8 @@ protected:
 public:
 	UFUNCTION(BlueprintCallable)
 	void AddCharacter(AActor* InCharacter);
+
+	bool IsOrient() const { return bOrient; }
 
 private:
 	void ChangeCharacter1();
@@ -47,6 +52,8 @@ private:
 	void ChangeCharactr(int32 NewInt);
 
 	void OnCanChange();
+
+	
 
 protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Character")
@@ -65,5 +72,7 @@ protected:
 	float ChangeTime;
 
 	int32 CharacterInt;
+
+	bool bOrient;
 
 };

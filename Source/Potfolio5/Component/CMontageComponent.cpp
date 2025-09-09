@@ -46,7 +46,6 @@ void UCMontageComponent::PlayMontage(UAnimMontage* Montage)
 		return;
 	}
 	Character->PlayAnimMontage(Montage);
-	
 }
 
 

@@ -31,7 +31,6 @@ void ACEnemy::BeginPlay()
 	AIC = GetController<ACAIController>();
 
 	Capsule->OnComponentBeginOverlap.AddDynamic(this, &ACEnemy::OnOverlapBegin);
-	
 
 }
 

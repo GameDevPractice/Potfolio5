@@ -34,21 +34,8 @@ public:
 
 	TArray<UCAction*> GetActions() const { return Actions; }
 
-
-	template<typename T>
-	TArray<T*> GetActionByClass(T* FindAction)
-	{
-		TArray<T*> Result;
-		for (auto Action : Actions)
-		{
-			if (T* CastedAction = Cast<T>(Action)) // 타입 캐스팅
-			{
-				Result.Add(CastedAction);
-				
-			}
-		}
-		return Result;
-	}
+	UFUNCTION(BlueprintCallable)
+	UCAction* GetActionByClass(TSubclassOf<UCAction> FindAction);
 
 protected:
 	UPROPERTY()

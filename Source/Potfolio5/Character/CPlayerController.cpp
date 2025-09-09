@@ -6,6 +6,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "UI/WB_Player_Change.h"
 #include "Component/CActionComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 ACPlayerController::ACPlayerController()
@@ -140,6 +141,29 @@ void ACPlayerController::ChangeCharactr(int32 NewInt)
 void ACPlayerController::OnCanChange()
 {
 	bCanChange = true;
+}
+
+void ACPlayerController::OrientOn(bool bLock)
+{
+	bOrient = bLock;
+	if (bOrient)
+	{
+		for (auto c : Characters)
+		{
+			ACharacter* Char = Cast<ACharacter>(c);
+			Char->bUseControllerRotationYaw = true;
+			Char->GetCharacterMovement()->bOrientRotationToMovement = false;
+		}
+	}
+	else
+	{
+		for (auto c : Characters)
+		{
+			ACharacter* Char = Cast<ACharacter>(c);
+			Char->bUseControllerRotationYaw = false;
+			Char->GetCharacterMovement()->bOrientRotationToMovement = true;
+		}
+	}
 }
 	
 

@@ -45,6 +45,8 @@ UWorld* UCAction::GetWorld(AActor* Actor)
 	return Actor->GetWorld();
 }
 
+
+
 UCActionComponent* UCAction::GetOwner() const
 {
 	return Cast<UCActionComponent>(GetOuter());
